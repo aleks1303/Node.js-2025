@@ -1,0 +1,72 @@
+lessons/lesson1/into_event-loop
+
+index.js
+
+// const http = require('node:http');
+// const path = require('node:path');
+const readline = require('node:readline/promises');
+
+const index = async () => {
+    // http
+    // const server = http.createServer((req, res) => {
+    //     res.writeHead(200, { 'Content-Type': 'application/json' });
+    //     res.end(JSON.stringify({
+    //         data: 'Hello World! Hello',
+    //     }));
+    // });
+    //
+    // server.listen(3000);
+
+    // path
+    // const pathToFile = __filename
+    // console.log(pathToFile)
+    // console.log(path.dirname(pathToFile))
+    // console.log(path.basename(pathToFile))
+    // console.log(path.extname(pathToFile))
+    // console.log(path.parse(pathToFile))
+    // console.log(path.isAbsolute(pathToFile))
+    // console.log(path.isAbsolute('./IdeaProjects/Node.js-2025/index.js'))
+
+    // Readline
+    const rlInstance = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    })
+    const name = await rlInstance.question('Name?');
+    console.log(`Your name is ${name}`)
+    process.exit(0)
+
+}
+void index();
+
+
+homework/lesson2/Create-folder
+
+index.js
+
+const path = require('node:path')
+const fsPromises = require('node:fs/promises');
+
+
+const createFolders = async () => {
+
+    const folder = 5
+    const file = 5
+
+    for (let i = 1; i <= folder; i++) {
+       const folderPath = path.join(__dirname, 'baseFolder', `folder${i}`);
+       await fsPromises.mkdir(folderPath,  {recursive: true});
+        console.log(path.dirname(folderPath))
+        console.log(__dirname, `folder${i}`)
+        const stat = await fsPromises.stat(folderPath)
+        console.log(stat.isFile())
+        for (let j = 1; j <= file; j++) {
+            const filePath = path.join(__dirname, 'baseFolder', `folder${i}`, `fileText_${j}.txt`)
+            await fsPromises.writeFile(filePath, `Текст для ${i} папки та ${j} файлу`)
+            console.log(__filename)
+            const stat = await fsPromises.stat(filePath)
+            console.log(stat.isFile())
+        }
+    }
+}
+createFolders()
