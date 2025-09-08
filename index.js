@@ -47,22 +47,64 @@ app.get('/users', (req, res) => {
     }
 });
 app.post('/users', (req, res) => {
-    // console.log(req.body)
-    // console.log(req.params)
-    // console.log(req.query)
-    res.send('Hello I want to add user! Ok?')
+    try {
+        const {name, email, password} = req.body;
+        const id = users[users.length - 1].id + 1;
+        const newUser = {id, name, email, password};
+        users.push(newUser);
+        res.status(201).send(newUser)
+    }
+    catch (e){
+        res.send(500).send(e.message)
+    }
+
 });
 app.get('/users/:userId', (req, res) => {
   try {
       const userId = Number(req.params.userId);
-      const user = users.find(user => user.id === userId)
+      const user = users.find(user => user.id === userId);
+      if (!user) {
+          res.status(404).send('User Not found')
+      }
       res.send(user)
       console.log(userId)
   } catch (e) {
 res.status(500).send(e.message)
   }
+});
 
+app.put('/users/:userId', (req, res) => {
+    try{
+        const userId = Number(req.params.userId);
+        const userIndex = users.findIndex(user => user.id === userId);
+        if (userIndex === -1){
+          return res.status(404).send('User not found')
+        }
+        const {name, email, password} = req.body;
+        users[userIndex].name = name;
+        users[userIndex].email = email;
+        users[userIndex].password = password;
+        res.status(201).send(users[userIndex])
+    }
+    catch (e){
+        res.status(500).send(e.message)
+    }
+})
+
+app.delete('/users/:userId', (req, res) => {
+    try{
+        const userId = Number(req.params.userId)
+        const userIndex = users.findIndex(user => user.id === userId)
+        if (userIndex === -1) {
+            res.status(404).send('User not found')
+        }
+        users.splice(userIndex, 1)
+        res.sendStatus(204)
+    }
+    catch (e){
+    res.status(500).send(e.message)
+    }
 });
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000/users')
-})
+});
