@@ -5,16 +5,16 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 const users = [
-    {id: 1, name: 'vasya', email: 'vas31@gmail.com', password: 'qwe233'},
-    {id: 2, name: 'petya', email: 'pet30@gmail.com', password: '233eds'},
-    {id: 3, name: 'kolya', email: 'kolya29@gmail.com', password: 'ddf3455'},
-    {id: 4, name: 'olga', email: 'olga28@gmail.com', password: 'red3455'},
-    {id: 5, name: 'max', email: 'max30@gmail.com', password: '43ew234'},
-    {id: 6, name: 'anya', email: 'anya31@gmail.com', password: '4e3w2'},
-    {id: 7, name: 'oleg', email: 'oleg28@gmail.com', password: '3we4r'},
-    {id: 8, name: 'andrey', email: 'andrey29@gmail.com', password: 'dfr43'},
-    {id: 9, name: 'masha', email: 'masha30@gmail.com', password: '432werf'},
-    {id: 10, name: 'olga', email: 'olya31@gmail.com', password: '432dfg'},
+    {id: 1, name: 'vasya', age: 23, email: 'vas31@gmail.com', password: 'qwe233'},
+    {id: 2, name: 'petya', age: 34, email: 'pet30@gmail.com', password: '233eds'},
+    {id: 3, name: 'kolya', age: 53, email: 'kolya29@gmail.com', password: 'ddf3455'},
+    {id: 4, name: 'olga', age: 13, email: 'olga28@gmail.com', password: 'red3455'},
+    {id: 5, name: 'max', age: 33, email: 'max30@gmail.com', password: '43ew234'},
+    {id: 6, name: 'anya', age: 27, email: 'anya31@gmail.com', password: '4e3w2'},
+    {id: 7, name: 'oleg', age: 28, email: 'oleg28@gmail.com', password: '3we4r'},
+    {id: 8, name: 'andrey', age: 43, email: 'andrey29@gmail.com', password: 'dfr43'},
+    {id: 9, name: 'masha', age: 33, email: 'masha30@gmail.com', password: '432werf'},
+    {id: 10, name: 'olga', age: 41, email: 'olya31@gmail.com', password: '432dfg'},
 
 ];
 
@@ -28,6 +28,15 @@ app.get('/users', (req, res) => {
 app.post('/users', (req, res) => {
     try {
         const {name, email, password} = req.body;
+        if (name.length < 3) {
+            res.send('Name is low')
+        }
+        if (email === !'@') {
+            res.send('Email wrong')
+        }
+        if (password < 1 && password > 20) {
+            res.send('Password wrong')
+        }
         const id = users[users.length - 1].id + 1;
         const newUser = {id, name, email, password};
         users.push(newUser);
