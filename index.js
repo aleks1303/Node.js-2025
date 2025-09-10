@@ -1,114 +1,107 @@
-const express = require("express")
-const app = express()
+const express = require('express');
+const app = express();
 const path = require('node:path');
-const fsPromises = require('node:fs/promises');
+const fs = require('node:fs/promises');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+const userFile = path.join(__dirname, 'users.json');
 
-const usersFile = path.join(__dirname, 'users.json')
-
-const userWrite = async (users) => {
-    await fsPromises.writeFile(usersFile, JSON.stringify(users, null, 2), "utf-8")
+const writeUser = async (users) => {
+    await fs.writeFile(userFile, JSON.stringify(users, null, 2));
 };
 
-const userRead = async () => {
+const readUser = async () => {
     try {
-        const data = await fsPromises.readFile(usersFile, "utf-8")
+        const data = await fs.readFile(userFile, 'utf-8')
         return JSON.parse(data)
     } catch (e) {
         if (e.code === 'ENOENT') {
-            await fsPromises.writeFile(usersFile, JSON.stringify([], null, 2), "utf-8")
+            await fs.writeFile(userFile, JSON.stringify([], null, 2));
             return []
         }
     }
 };
 
 app.get('/users', async (req, res) => {
-    try {
-        const users = await userRead()
-        res.send(users)
-    } catch (e) {
-       return  res.status(500).send(e.message)
-    }
+    const users = await readUser()
+    return res.send(users);
 });
 
 app.post('/users', async (req, res) => {
     try {
         const {name, age, email, password} = req.body;
-        const users = await userRead()
+        const users = await readUser();
         if (name.length < 3) {
-         return  res.send('Name is low')
+            return res.send('Name is wrong')
         }
-        if (age <= 0) {
-           return  res.send('age wrong')
+        if (age <= 0 && age > 120) {
+            return res.send('Age is wrong')
         }
         const id = users.length > 0 ? users[users.length - 1].id + 1 : 1;
         const newUser = {id, name, age, email, password};
         users.push(newUser);
-        await userWrite(users)
-        res.status(201).send(newUser)
-    } catch (e) {
-       return res.status(500).send(e.message)
-    }
-});
-
-app.get('/users/:userId', async (req, res) => {
-    try {
-
-        const userId = Number(req.params.userId);
-        const users = await userRead()
-        const user = users.find(user => user.id === userId);
-        if (!user) {
-           return  res.status(404).send('User Not found')
-        }
-       return res.send(user)
-
+        await writeUser(users);
+        return res.status(201).send(newUser)
     } catch (e) {
         res.status(500).send(e.message)
     }
 });
 
-app.put('/users/:userId', async (req, res) => {
-    try {
-
+app.get('/users/:userId',async (req, res) => {
+    try{
         const userId = Number(req.params.userId);
-        const users = await userRead();
-        const userIndex = users.findIndex(user => user.id === userId);
-        if (userIndex === -1) {
-            return res.status(404).send('User not found')
+        const users = await readUser();
+        const user = users.find(user => user.id === userId);
+        if (!user) {
+           return res.status(404).send('User not found')
+        }
+        return res.send(user)
+    }
+    catch (e){
+        return res.status(500).send(e.message)
+    }
+});
+
+app.put('/users/:userId', async (req, res) => {
+    try{
+        const userId = Number(req.params.userId);
+        const users = await readUser();
+        const user = users.findIndex(user => user.id === userId);
+        if (user === -1) {
+            return res.status(404).send('User Not Found')
         }
         const {name, age, email, password} = req.body;
-        users[userIndex].name = name;
-        users[userIndex].age = age;
-        users[userIndex].email = email;
-        users[userIndex].password = password;
-        await userWrite(users)
-        res.status(201).send(users[userIndex])
-    } catch (e) {
-       return  res.status(500).send(e.message)
+        users[user].name = name;
+        users[user].age = age;
+        users[user].email = email;
+        users[user].password = password;
+        await writeUser(users);
+        return res.status(201).send(users[user])
+    }
+    catch (e){
+        return res.status(500).send(e.message)
     }
 });
 
 app.delete('/users/:userId', async (req, res) => {
-    try {
-
+    try{
         const userId = Number(req.params.userId);
-        const users = await userRead()
-        const userIndex = users.findIndex(user => user.id === userId)
-        if (userIndex === -1) {
-           return  res.status(404).send('User not found')
+        const users = await readUser();
+        const user = users.findIndex(user => user.id === userId);
+        if (user === -1) {
+            return res.status(404).send('User not found')
         }
-        users.splice(userIndex, 1)
-        await userWrite(users)
-        res.sendStatus(204)
-    } catch (e) {
-       return  res.status(500).send(e.message)
+        users.splice(user, 1)
+        await writeUser(users)
+        return res.sendStatus(204);
+    }
+    catch (e){
+        return res.status(500).send(e.message)
     }
 });
+
 app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000/users')
-});
-
-
+    console.log('We are listening on port 3000')
+})

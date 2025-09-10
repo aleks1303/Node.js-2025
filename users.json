@@ -1,16 +1,30 @@
 [
   {
     "id": 1,
-    "name": "Kevin",
-    "age": 28,
-    "email": "kevin@gmail.com",
-    "password": "kevin431998rev"
+    "name": "Nataly",
+    "age": 53,
+    "email": "nata@gmail.com",
+    "password": "nata431998rev"
   },
   {
     "id": 2,
-    "name": "Vika",
-    "age": 18,
+    "name": "Viktoria",
+    "age": 33,
     "email": "vika@gmail.com",
     "password": "vika431998rev"
+  },
+  {
+    "id": 3,
+    "name": "Vova",
+    "age": 35,
+    "email": "vovf@gmail.com",
+    "password": "vova431998rev"
+  },
+  {
+    "id": 4,
+    "name": "Viva",
+    "age": 45,
+    "email": "vivf@gmail.com",
+    "password": "vivf431998rev"
   }
 ]
