@@ -34,10 +34,10 @@ app.post('/users', async (req, res) => {
         const {name, age, email, password} = req.body;
         const users = await readUser();
         if (name.length < 3) {
-            return res.send('Name is wrong')
+            return res.status(400).send('Name is wrong')
         }
         if (age <= 0 && age > 120) {
-            return res.send('Age is wrong')
+            return res.status(400).send('Age is wrong')
         }
         const id = users.length > 0 ? users[users.length - 1].id + 1 : 1;
         const newUser = {id, name, age, email, password};
