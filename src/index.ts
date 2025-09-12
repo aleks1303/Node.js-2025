@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 
 import {write, read} from "./fs.service";
 
@@ -7,7 +7,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 
-app.get('/users', async (req, res) => {
+app.get('/users', async (req :Request, res: Response) => {
     try {
         const users = await read()
         return res.send(users);
@@ -17,7 +17,7 @@ app.get('/users', async (req, res) => {
     }
 });
 
-app.post('/users', async (req, res) => {
+app.post('/users', async (req :Request, res: Response) => {
     try {
         const {name, age, email, password} = req.body;
         const users = await read();
@@ -43,7 +43,7 @@ app.post('/users', async (req, res) => {
     }
 });
 
-app.get('/users/:userId',async (req, res) => {
+app.get('/users/:userId',async (req :Request , res: Response) => {
     try{
         const userId = Number(req.params.userId);
         const users = await read();
@@ -58,7 +58,7 @@ app.get('/users/:userId',async (req, res) => {
     }
 });
 
-app.put('/users/:userId', async (req, res) => {
+app.put('/users/:userId', async (req :Request, res: Response) => {
     try{
         const userId = Number(req.params.userId);
         const users = await read();
@@ -79,7 +79,7 @@ app.put('/users/:userId', async (req, res) => {
     }
 });
 
-app.delete('/users/:userId', async (req, res) => {
+app.delete('/users/:userId', async (req :Request , res: Response) => {
     try{
         const userId = Number(req.params.userId);
         const users = await read();
