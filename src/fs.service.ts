@@ -18,9 +18,6 @@ const read = async () => {
         const data = await fs.readFile(pathToFile, 'utf-8');
         return data ? JSON.parse(data) : [];
     } catch (e) {
-        if (e.code === "ENOENT") {
-            await fs.writeFile(pathToFile, JSON.stringify(users));
-        }
         console.log("Помилка запису", e.message);
     }
 };
