@@ -6,10 +6,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/users", async            (req: Request, res: Response) => {
+app.get("/users", async  (req: Request, res: Response) => {
   try {
-    const users = await read();
-           return res.send(users);
+    const users =   await read();
+    return res.send(users);
   } catch (e) {
     res.status(500).send(e.message);
   }
