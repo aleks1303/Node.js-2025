@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { IUser } from "./interfaces/user.interface";
 
-const pathToFile =     path.join(process.cwd(), "db.json");
+const pathToFile = path.join(process.cwd(), "db.json");
 
 const read = async (): Promise<IUser[]> => {
   try {
