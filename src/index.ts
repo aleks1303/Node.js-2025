@@ -1,23 +1,22 @@
-import express, { Request, Response } from 'express';
+import express, {Request, Response} from 'express';
 
-  import {write, read} from "./fs.service";
+import {write, read} from "./fs.service";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 
-app.get('/users', async (req :Request, res: Response) => {
+app.get('/users', async (req: Request, res: Response) => {
     try {
         const users = await read()
         return res.send(users);
-    }
-    catch (e){
+    } catch (e) {
         res.status(500).send(e.message)
     }
 });
 
-app.post('/users', async (req :Request, res: Response) => {
+app.post('/users', async (req: Request, res: Response) => {
     try {
         const {name, age, email, password} = req.body;
         const users = await read();
@@ -43,8 +42,8 @@ app.post('/users', async (req :Request, res: Response) => {
     }
 });
 
-app.get('/users/:userId',async (req :Request , res: Response) => {
-    try{
+app.get('/users/:userId', async (req: Request, res: Response) => {
+    try {
         const userId = Number(req.params.userId);
         const users = await read();
         const user = users.find(user => user.id === userId);
@@ -52,14 +51,13 @@ app.get('/users/:userId',async (req :Request , res: Response) => {
             return res.status(404).send('User not found')
         }
         return res.send(user)
-    }
-    catch (e){
+    } catch (e) {
         return res.status(500).send(e.message)
     }
 });
 
-app.put('/users/:userId', async (req :Request, res: Response) => {
-    try{
+app.put('/users/:userId', async (req: Request, res: Response) => {
+    try {
         const userId = Number(req.params.userId);
         const users = await read();
         const user = users.findIndex(user => user.id === userId);
@@ -73,14 +71,13 @@ app.put('/users/:userId', async (req :Request, res: Response) => {
         users[user].password = password;
         await write(users);
         return res.status(201).send(users[user])
-    }
-    catch (e){
+    } catch (e) {
         return res.status(500).send(e.message)
     }
 });
 
-app.delete('/users/:userId', async (req :Request , res: Response) => {
-    try{
+app.delete('/users/:userId', async (req: Request, res: Response) => {
+    try {
         const userId = Number(req.params.userId);
         const users = await read();
         const user = users.findIndex(user => user.id === userId);
@@ -90,8 +87,7 @@ app.delete('/users/:userId', async (req :Request , res: Response) => {
         users.splice(user, 1)
         await write(users)
         return res.sendStatus(204);
-    }
-    catch (e){
+    } catch (e) {
         return res.status(500).send(e.message)
     }
 });
