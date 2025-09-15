@@ -51,5 +51,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['.eslintrc.js', '/dist', '/data'],
+  ignorePatterns: ['.eslint.config.mjs', '/dist', '/data'],
 };
