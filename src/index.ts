@@ -1,6 +1,4 @@
-console.log("hello");
-
-const foo =     () => {
-    console.log('hello')
-}
-foo()
+const foo = () => {
+  console.log("hello");
+};
+foo();
