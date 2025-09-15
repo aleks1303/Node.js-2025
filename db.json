@@ -5,5 +5,26 @@
     "age": 22,
     "email": "sony@gmail.com",
     "password": "sony431998rev"
+  },
+  {
+    "id": 2,
+    "name": "Global",
+    "age": 22,
+    "email": "sony@gmail.com",
+    "password": "sony431998rev"
+  },
+  {
+    "id": 3,
+    "name": "Global",
+    "age": 22,
+    "email": "sony@gmail.com",
+    "password": "sony431998rev"
+  },
+  {
+    "id": 4,
+    "name": "Global",
+    "age": 22,
+    "email": "sony@gmail.com",
+    "password": "sony431998rev"
   }
 ]
