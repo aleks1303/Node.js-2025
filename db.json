@@ -40,5 +40,19 @@
     "age": 22,
     "email": "sony@gmail.com",
     "password": "sony431998rev"
+  },
+  {
+    "id": 7,
+    "name": "Galinfa",
+    "age": 22,
+    "email": "sony@gmail.com",
+    "password": "sony431998rev"
+  },
+  {
+    "id": 8,
+    "name": "Galina",
+    "age": 22,
+    "email": "sony@gmail.com",
+    "password": "sony431998rev"
   }
 ]
