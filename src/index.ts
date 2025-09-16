@@ -59,7 +59,7 @@ app.put("/users/:userId", async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId);
     const users = await read();
-    const user = users.findIndex((user) => user.id === userId);
+    const user =   users.findIndex((user) => user.id === userId);
     if (user === -1) {
       return res.status(404).send("User Not Found");
     }
