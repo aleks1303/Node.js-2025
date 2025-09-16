@@ -1,35 +1,36 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 
+import { ApiError } from "./errors/api-error";
 import { read, write } from "./fs.service";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/users", async (req: Request, res: Response) => {
+app.get("/users", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await read();
     return res.send(users);
   } catch (e) {
-    res.status(500).send(e.message);
+    next(e);
   }
 });
 
-app.post("/users", async (req: Request, res: Response) => {
+app.post("/users", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, age, email, password } = req.body;
     const users = await read();
     if (!name || name.length < 3) {
-      return res.status(400).send("Name is wrong");
+      throw new ApiError("Name is wrong", 400);
     }
     if (age <= 0 || age > 120) {
-      return res.status(400).send("Age is wrong");
+      throw new ApiError("Age is wrong", 400);
     }
     if (!email || !email.includes("@")) {
-      return res.status(400).send("Email is wrong");
+      throw new ApiError("Email is wrong", 400);
     }
     if (!password || password.length < 6) {
-      return res.status(400).send("Password is wrong");
+      throw new ApiError("Password is wrong", 400);
     }
     const id = users.length > 0 ? users[users.length - 1].id + 1 : 1;
     const newUser = { id, name, age, email, password };
@@ -37,58 +38,76 @@ app.post("/users", async (req: Request, res: Response) => {
     await write(users);
     return res.status(201).send(newUser);
   } catch (e) {
-    res.status(500).send(e.message);
+    next(e);
   }
 });
 
-app.get("/users/:userId", async (req: Request, res: Response) => {
-  try {
-    const userId = Number(req.params.userId);
-    const users = await read();
-    const user = users.find((user) => user.id === userId);
-    if (!user) {
-      return res.status(404).send("User not found");
+app.get(
+  "/users/:userId",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = Number(req.params.userId);
+      const users = await read();
+      const user = users.find((user) => user.id === userId);
+      if (!user) {
+        throw new ApiError("User not found", 404);
+      }
+      return res.send(user);
+    } catch (e) {
+      next(e);
     }
-    return res.send(user);
-  } catch (e) {
-    return res.status(500).send(e.message);
-  }
+  },
+);
+
+app.put(
+  "/users/:userId",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = Number(req.params.userId);
+      const users = await read();
+      const user = users.findIndex((user) => user.id === userId);
+      if (user === -1) {
+        throw new ApiError("User Not Found", 404);
+      }
+      const { name, age, email, password } = req.body;
+      users[user].name = name;
+      users[user].age = age;
+      users[user].email = email;
+      users[user].password = password;
+      await write(users);
+      return res.status(201).send(users[user]);
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
+app.delete(
+  "/users/:userId",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = Number(req.params.userId);
+      const users = await read();
+      const user = users.findIndex((user) => user.id === userId);
+      if (user === -1) {
+        throw new ApiError("User not found", 404);
+      }
+      users.splice(user, 1);
+      await write(users);
+      return res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  },
+);
+
+app.use((error: ApiError, req: Request, res: Response, next: NextFunction) => {
+  res.status(error.status || 500).send(error.message);
 });
 
-app.put("/users/:userId", async (req: Request, res: Response) => {
-  try {
-    const userId = Number(req.params.userId);
-    const users = await read();
-    const user =   users.findIndex((user) => user.id === userId);
-    if (user === -1) {
-      return res.status(404).send("User Not Found");
-    }
-    const { name, age, email, password } = req.body;
-    users[user].name = name;
-    users[user].age = age;
-    users[user].email = email;
-    users[user].password = password;
-    await write(users);
-    return res.status(201).send(users[user]);
-  } catch (e) {
-    return res.status(500).send(e.message);
-  }
-});
-
-app.delete("/users/:userId", async (req: Request, res: Response) => {
-  try {
-    const userId = Number(req.params.userId);
-    const users = await read();
-    const user = users.findIndex((user) => user.id === userId);
-    if (user === -1) {
-      return res.status(404).send("User not found");
-    }
-    users.splice(user, 1);
-    await write(users);
-    return res.sendStatus(204);
-  } catch (e) {
-    return res.status(500).send(e.message);
-  }
+// ловить помилки які ми не хендлимо (наприклад в асинхронному коді) і показує що трапилось
+process.on("uncaughtException", (error) => {
+  console.error("uncaughtException", error.message, error.stack);
 });
 
 app.listen(3000, () => {});
