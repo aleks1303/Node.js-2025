@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 
-import { read, write } from "../services/fs.sevices";
 import { userService } from "../services/user.service";
 
 export const userController = {
@@ -12,13 +11,7 @@ export const userController = {
       next(e);
     }
   },
-  create: async (req: Request, res: Response, next: NextFunction, dto) => {
-    try {
-      const users = await userService.create(dto);
+  create: (req: Request, res: Response, next: NextFunction) => {
 
-      return res.status(201).send(newUser);
-    } catch (e) {
-      next(e);
-    }
-  },
+  }
 };

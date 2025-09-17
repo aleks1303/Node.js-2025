@@ -5,4 +5,5 @@ export const userRepository = {
   getAllUsers: async (): Promise<IUser[]> => {
     return await read();
   },
+  create: () => {},
 };

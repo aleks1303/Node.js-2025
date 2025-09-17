@@ -19,5 +19,6 @@ export const userService = {
     if (!dto.password || dto.password.length < 6) {
       throw new ApiError("Password is wrong", 400);
     }
+    return userRepository.create;
   },
 };
