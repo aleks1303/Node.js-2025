@@ -3,12 +3,11 @@ import path from "node:path";
 
 const pathToFile = path.join(process.cwd(), "db.json");
 
-const read = async (users) => {
-  await fs.readFile(pathToFile, JSON.stringify(users));
+const read = async () => {
+  const data = await fs.readFile(pathToFile, "utf-8");
+  return data ? JSON.parse(data) : [];
 };
 
-const write = () => {
-
-};
+const write = () => {};
 
 export { read, write };
