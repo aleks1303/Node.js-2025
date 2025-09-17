@@ -7,6 +7,7 @@
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 //
+
 // app.use("/users", userRouter);
 // // app.get("/users", async (req: Request, res: Response, next: NextFunction) => {
 // //   try {
@@ -17,6 +18,7 @@
 // //   }
 // // });
 //
+
 // // app.post("/users", async (req: Request, res: Response, next: NextFunction) => {
 // //   try {
 // //     const { name, age, email, password } = req.body;
