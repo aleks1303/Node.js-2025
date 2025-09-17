@@ -18,7 +18,8 @@ export const userRepository = {
     await write(users);
     return newUser;
   },
-  getUserById: async (userID: number): Promise<IUser> || null => {
-
-  }
+  getUserById: async (userId: number): Promise<IUser> | null => {
+    const users = await read();
+    return users.find(user => user.id === userId);
+  },
 };
