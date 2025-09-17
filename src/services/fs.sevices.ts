@@ -14,6 +14,7 @@ const read = async () => {
       await fs.writeFile(pathToFile, JSON.stringify([], null, 2), "utf-8");
       return [];
     }
+    console.log("Помилка запису", e.message);
   }
 };
 
