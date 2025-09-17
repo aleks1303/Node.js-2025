@@ -21,4 +21,7 @@ export const userService = {
     }
     return await userRepository.create(dto);
   },
+  getUserById: (userId: number) => {
+    const user =
+  }
 };

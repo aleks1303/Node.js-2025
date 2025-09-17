@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { IUser } from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
+import {asyncWrapProviders} from "node:async_hooks";
 
 export const userController = {
   getAllUsers: async (req: Request, res: Response, next: NextFunction) => {
@@ -21,10 +22,11 @@ export const userController = {
       next(e);
     }
   },
-  getUserById: (req: Request, res: Response, next: NextFunction) => {
+  getUserById: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = Number(req.params.userId);
-      res.json(userId);
+      const result = await userService.getUserById(userId);
+      res.json(result);
     } catch (e) {
       next(e);
     }
