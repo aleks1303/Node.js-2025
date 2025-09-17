@@ -29,10 +29,10 @@
   },
   {
     "id": 5,
-    "name": "Vitaliy",
-    "age": 34,
-    "email": "vital@gmail.com",
-    "password": "svitanok431998rev"
+    "name": "Norman",
+    "age": 25,
+    "email": "norman@com",
+    "password": "norman3434edwd"
   },
   {
     "id": 6,
@@ -43,9 +43,9 @@
   },
   {
     "id": 7,
-    "name": "Magnus",
+    "name": "Alex",
     "age": 35,
-    "email": "magnus@com",
-    "password": "magnus3434edwd"
+    "email": "alex@com",
+    "password": "alex3434edwd"
   }
 ]
