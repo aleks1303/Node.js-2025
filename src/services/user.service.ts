@@ -1,3 +1,4 @@
+import { userController } from "../controllers/user.contoller";
 import { ApiError } from "../errors/user.error";
 import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
@@ -21,7 +22,11 @@ export const userService = {
     }
     return await userRepository.create(dto);
   },
-  getUserById: (userId: number) => {
-    const user =
-  }
+  getUserById: async (userId: number) => {
+    const user = await userRepository.getUserById(userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    return user;
+  },
 };
