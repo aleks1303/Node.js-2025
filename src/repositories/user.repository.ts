@@ -16,5 +16,6 @@ export const userRepository = {
     };
     users.push(newUser);
     await write(users);
+    return newUser;
   },
 };

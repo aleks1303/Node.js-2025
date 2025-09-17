@@ -21,4 +21,12 @@ export const userController = {
       next(e);
     }
   },
+  getUserById: (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = Number(req.params.userId);
+      res.json(userId);
+    } catch (e) {
+      next(e);
+    }
+  },
 };
