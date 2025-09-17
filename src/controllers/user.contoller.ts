@@ -16,7 +16,7 @@ export const userController = {
     try {
       const dto = req.body as IUser;
       const users = await userService.create(dto);
-      res.status(200).send(users);
+      res.status(201).json(users);
     } catch (e) {
       next(e);
     }

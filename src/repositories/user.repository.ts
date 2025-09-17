@@ -1,9 +1,20 @@
 import { IUser } from "../interfaces/user.interface";
-import { read } from "../services/fs.sevices";
+import { read, write } from "../services/fs.sevices";
 
 export const userRepository = {
   getAllUsers: async (): Promise<IUser[]> => {
     return await read();
   },
-  create: () => {},
+  create: async (dto: Partial<IUser>) => {
+    const users = await read();
+    const newUser = {
+      id: users.length > 0 ? users[users.length - 1].id + 1 : 1,
+      name: dto.name,
+      age: dto.age,
+      email: dto.email,
+      password: dto.password,
+    };
+    users.push(newUser);
+    await write(users);
+  },
 };
