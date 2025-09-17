@@ -1,4 +1,3 @@
-import { userController } from "../controllers/user.contoller";
 import { ApiError } from "../errors/user.error";
 import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
@@ -26,6 +25,13 @@ export const userService = {
     const user = await userRepository.getUserById(userId);
     if (!user) {
       throw new ApiError("User not found", 404);
+    }
+    return user;
+  },
+  update: async (userId: number, dto: Partial<IUser>) => {
+    const user = await userRepository.update(userId, dto);
+    if (!user) {
+      throw new ApiError("User Not Found", 404);
     }
     return user;
   },

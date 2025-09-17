@@ -8,5 +8,6 @@ router.get("/", userController.getAllUsers);
 router.post("/", userController.create);
 
 router.get("/:userId", userController.getUserById);
+router.put("/:userId", userController.update);
 
 export const userRouter = router;

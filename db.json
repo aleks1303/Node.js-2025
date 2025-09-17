@@ -1,9 +1,30 @@
 [
   {
     "id": 1,
-    "name": "Galina",
-    "age": 22,
-    "email": "sony@gmail.com",
-    "password": "sony431998rev"
+    "name": "Magi",
+    "age": 27,
+    "email": "magi@com",
+    "password": "magi3434edwd"
+  },
+  {
+    "id": 2,
+    "name": "Magi",
+    "age": 27,
+    "email": "magi@com",
+    "password": "magi3434edwd"
+  },
+  {
+    "id": 3,
+    "name": "Nataly",
+    "age": 27,
+    "email": "nata@com",
+    "password": "nata3434edwd"
+  },
+  {
+    "id": 4,
+    "name": "Magnus",
+    "age": 35,
+    "email": "magnus@com",
+    "password": "magnus3434edwd"
   }
 ]

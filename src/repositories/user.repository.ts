@@ -20,6 +20,16 @@ export const userRepository = {
   },
   getUserById: async (userId: number): Promise<IUser> | null => {
     const users = await read();
-    return users.find(user => user.id === userId);
+    return users.find((user: IUser) => user.id === userId);
+  },
+  update: async (userId: number, dto: Partial<IUser>): Promise<IUser> => {
+    const users = await read();
+    const user = users.findIndex((user: IUser) => user.id === userId);
+    users[user].name = dto.name;
+    users[user].age = dto.age;
+    users[user].email = dto.email;
+    users[user].password = dto.password;
+    await write(users);
+    return users[user];
   },
 };
