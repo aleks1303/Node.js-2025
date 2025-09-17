@@ -32,4 +32,15 @@ export const userRepository = {
     await write(users);
     return users[user];
   },
+  delete: async (userId: number): Promise<IUser> | null => {
+    const users = await read();
+    const user = users.findIndex((user: IUser) => user.id === userId);
+    if (user === -1) {
+      return null;
+    }
+    const deleteUser = users[user];
+    users.splice(user, 1);
+    await write(users);
+    return deleteUser;
+  },
 };

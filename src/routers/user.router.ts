@@ -9,5 +9,6 @@ router.post("/", userController.create);
 
 router.get("/:userId", userController.getUserById);
 router.put("/:userId", userController.update);
+router.delete("/:userId", userController.delete);
 
 export const userRouter = router;

@@ -1,27 +1,48 @@
 [
   {
     "id": 1,
-    "name": "Magi",
-    "age": 27,
-    "email": "magi@com",
-    "password": "magi3434edwd"
+    "name": "Lora",
+    "age": 32,
+    "email": "dvd@gmail.com",
+    "password": "dss431998rev"
   },
   {
     "id": 2,
-    "name": "Magi",
-    "age": 27,
-    "email": "magi@com",
-    "password": "magi3434edwd"
+    "name": "Magnus",
+    "age": 37,
+    "email": "dvd@gmail.com",
+    "password": "dss431998rev"
   },
   {
     "id": 3,
-    "name": "Nataly",
-    "age": 27,
-    "email": "nata@com",
-    "password": "nata3434edwd"
+    "name": "Maryna",
+    "age": 34,
+    "email": "mari@gmail.com",
+    "password": "mari431998rev"
   },
   {
     "id": 4,
+    "name": "Maks",
+    "age": 34,
+    "email": "va@gmail.com",
+    "password": "sdki431998rev"
+  },
+  {
+    "id": 5,
+    "name": "Vitaliy",
+    "age": 34,
+    "email": "vital@gmail.com",
+    "password": "svitanok431998rev"
+  },
+  {
+    "id": 6,
+    "name": "Vitaliy",
+    "age": 34,
+    "email": "vital@gmail.com",
+    "password": "svitanok431998rev"
+  },
+  {
+    "id": 7,
     "name": "Magnus",
     "age": 35,
     "email": "magnus@com",

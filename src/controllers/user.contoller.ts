@@ -40,4 +40,13 @@ export const userController = {
       next(e);
     }
   },
+  delete: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = Number(req.params.userId);
+      const result = await userService.delete(userId);
+      res.json(result);
+    } catch (e) {
+      next(e);
+    }
+  },
 };

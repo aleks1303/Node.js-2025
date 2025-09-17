@@ -21,17 +21,24 @@ export const userService = {
     }
     return await userRepository.create(dto);
   },
-  getUserById: async (userId: number) => {
+  getUserById: async (userId: number): Promise<IUser> => {
     const user = await userRepository.getUserById(userId);
     if (!user) {
       throw new ApiError("User not found", 404);
     }
     return user;
   },
-  update: async (userId: number, dto: Partial<IUser>) => {
+  update: async (userId: number, dto: Partial<IUser>): Promise<IUser> => {
     const user = await userRepository.update(userId, dto);
     if (!user) {
       throw new ApiError("User Not Found", 404);
+    }
+    return user;
+  },
+  delete: async (userId: number): Promise<IUser> => {
+    const user = await userRepository.delete(userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
     }
     return user;
   },
