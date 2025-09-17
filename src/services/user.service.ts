@@ -6,7 +6,7 @@ export const userService = {
   getAllUsers: async (): Promise<IUser[]> => {
     return await userRepository.getAllUsers();
   },
-  create: async (dto: Partial<IUser>): Promise<any> => {
+  create: async (dto: Partial<IUser>): Promise<IUser> => {
     if (!dto.name || dto.name.length < 3) {
       throw new ApiError("Name is wrong", 400);
     }
@@ -19,6 +19,6 @@ export const userService = {
     if (!dto.password || dto.password.length < 6) {
       throw new ApiError("Password is wrong", 400);
     }
-    return userRepository.create;
+    return await userRepository.create(dto);
   },
 };
