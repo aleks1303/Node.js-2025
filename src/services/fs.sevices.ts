@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+import { IUser } from "../interfaces/user.interface";
+
 const pathToFile = path.join(process.cwd(), "db.json");
 
 const read = async () => {
@@ -15,8 +17,12 @@ const read = async () => {
   }
 };
 
-const write = async () => {
-  await fs.writeFile(pathToFile, )
+const write = async (users: IUser): Promise<void> => {
+  try {
+    await fs.writeFile(pathToFile, JSON.stringify(users, null, 2), "utf-8");
+  } catch (e) {
+    console.log("Помилка запису", e.message);
+  }
 };
 
 export { read, write };
