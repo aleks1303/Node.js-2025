@@ -17,7 +17,7 @@ class UserController {
     try {
       const dto = req.body as IUser;
       const user = await userService.createUser(dto);
-      res.status(201).send(user);
+      res.status(201).json(user);
       return user;
     } catch (e) {
       next(e);
