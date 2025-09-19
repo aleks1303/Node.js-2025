@@ -37,6 +37,14 @@ class UserService {
     }
     return user;
   }
+
+  public async deleteUser(userId: number): Promise<void> {
+    const user = await userRepository.deleteUser(userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    return null;
+  }
 }
 
 export const userService = new UserService();

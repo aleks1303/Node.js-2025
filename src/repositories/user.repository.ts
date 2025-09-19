@@ -33,6 +33,16 @@ class UserRepository {
     await write(users);
     return users[user];
   }
+
+  public async deleteUser(userId: number): Promise<void> {
+    const users = await read();
+    const user = users.findIndex((user: IUser) => user.id === userId);
+    if (user === -1) {
+      return null;
+    }
+    users.splice(user, 1);
+    await write(users);
+  }
 }
 
 export const userRepository = new UserRepository();
