@@ -18,6 +18,17 @@ class UserRepository {
     await write(users);
     return newUser;
   }
+  public async getUserById(userId: number): Promise<IUser> {
+    const users = await read();
+    return users.find((user: IUser) => user.id === userId);
+  }
+
+  public async updateUser(userId: number, dto: Partial<IUser>): Promise<IUser> {
+    const users = await read();
+    const user = users.find((user: IUser) => user.id === userId);
+    users[user] = dto.name
+    users[user] = dto.age
+  }
 }
 
 export const userRepository = new UserRepository();

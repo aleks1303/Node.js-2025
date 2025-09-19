@@ -1,3 +1,4 @@
+import { ApiError } from "../errors/api-error";
 import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
 
@@ -7,25 +8,34 @@ class UserService {
   }
   public async createUser(dto: Partial<IUser>): Promise<IUser> {
     if (!dto.name || dto.name.length < 3) {
-      console.log("Name is wrong");
+      throw new ApiError("Name is wrong", 400);
     }
-    if (!dto.email || dto.email.includes("@")) {
-      console.log("Email is wrong");
+    if (!dto.email || !dto.email.includes("@")) {
+      throw new ApiError("Email is wrong", 400);
     }
     if (!dto.age || dto.age === 0) {
-      console.log("Age is wrong");
+      throw new ApiError("Age is wrong", 400);
     }
     if (!dto.password || dto.password.length < 4) {
-      console.log("Password is wrong");
+      throw new ApiError("Password is wrong", 400);
     }
     return await userRepository.createUser(dto);
   }
 
-  public async getUserByID(userId: number): Promise<IUser> {
-    const user = await userRepository.getUserById(userId)
-   if (!user) {
-     console.log("")
-   }
+  public async getUserById(userId: number): Promise<IUser> {
+    const user = await userRepository.getUserById(userId);
+    if (!user) {
+      throw new ApiError("Not found", 404);
+    }
+    return user;
+  }
+
+  public async updateUser(userId: number, dto: Partial<IUser>): Promise<IUser> {
+    const user = await userRepository.update(userId, dto);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    return user;
   }
 }
 

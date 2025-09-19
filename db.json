@@ -5,5 +5,19 @@
     "age": 34,
     "email": "vital@gmail.com",
     "password": "svitanok431998rev"
+  },
+  {
+    "id": 2,
+    "name": "Norman",
+    "age": 35,
+    "email": "normangmail.com",
+    "password": "norman431998rev"
+  },
+  {
+    "id": 3,
+    "name": "Norman",
+    "age": 35,
+    "email": "norman@gmail.com",
+    "password": "norman431998rev"
   }
 ]
