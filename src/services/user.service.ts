@@ -22,9 +22,9 @@ class UserService {
   }
 
   public async getUserByID(userId: number): Promise<IUser> {
-
+    const user = await userRepository.getUserById(userId)
    if (!user) {
-
+     console.log("")
    }
   }
 }
