@@ -11,6 +11,14 @@ class UserController {
       next(e);
     }
   }
+
+  public async createUser (req: Request, res: Response, next: NextFunction) {
+    try {
+      const dto = await req.body;
+
+
+    } catch (e) {}
+  }
 }
 
 export const userController = new UserController();
