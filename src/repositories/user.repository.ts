@@ -8,8 +8,6 @@ class UserRepository {
   public async createUser(dto: Partial<IUser>): Promise<IUser> {
     const users = await read();
     const newUser = {
-
-
     }
 
   }
