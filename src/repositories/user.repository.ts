@@ -30,7 +30,6 @@ class UserRepository {
     users[user].age = dto.age;
     users[user].email = dto.email;
     users[user].password = dto.password;
-    users.push(users[user]);
     await write(users);
     return users[user];
   }
