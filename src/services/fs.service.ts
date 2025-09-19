@@ -10,12 +10,20 @@ const read = async (): Promise<IUser[]> => {
     const data = await fs.readFile(pathToFile, "utf-8");
     return data ? JSON.parse(data) : [];
   } catch (e) {
+    if (e.code === "ENOENT") {
+      await fs.writeFile(pathToFile, JSON.stringify([], null, 2), "utf-8");
+      return [];
+    }
     console.log("Помилка завантаження", e.message);
   }
 };
 
 const write = async (users: IUser[]): Promise<void> => {
-  try{
-    await fs.writeFile(pathToFile, JSON.stringify(users, null, 2), "utf-8")
+  try {
+    await fs.writeFile(pathToFile, JSON.stringify(users, null, 2), "utf-8");
+  } catch (e) {
+    console.log("Помилка завантаження", e.message);
   }
 };
+
+export { read, write };
