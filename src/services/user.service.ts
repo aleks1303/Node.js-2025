@@ -18,7 +18,7 @@ class UserService {
     if (!dto.password || dto.password.length < 4) {
       console.log("Password is wrong");
     }
-    return await userRepository.createUser();
+    return await userRepository.createUser(dto);
   }
 }
 
