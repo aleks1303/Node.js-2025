@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
+import { IUser } from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
 
 class UserController {
@@ -12,12 +13,15 @@ class UserController {
     }
   }
 
-  public async createUser (req: Request, res: Response, next: NextFunction) {
+  public async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const dto = await req.body;
-
-
-    } catch (e) {}
+      const dto = req.body as IUser;
+      const user = await userService.createUser(dto);
+      res.status(201).send(user);
+      return user;
+    } catch (e) {
+      next(e);
+    }
   }
 }
 
