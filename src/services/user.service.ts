@@ -20,6 +20,13 @@ class UserService {
     }
     return await userRepository.createUser(dto);
   }
+
+  public async getUserByID(userId: number): Promise<IUser> {
+
+   if (!user) {
+
+   }
+  }
 }
 
 export const userService = new UserService();
