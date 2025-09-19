@@ -47,16 +47,16 @@ class UserController {
     }
   }
 
-  public async deleteUser(req: Request, res: Response, next: NextFunction) {
-    try {
-      const userId = Number(req.params.userId);
-      const user = await userService.deleteUser(userId);
-      res.status(204).json(user);
-      return user;
-    } catch (e) {
-      next(e);
-    }
-  }
+  // public async deleteUser(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     const userId = Number(req.params.userId);
+  //     const user = await userService.deleteUser(userId);
+  //     res.status(204).json(user);
+  //     return user;
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  //}
 }
 
 export const userController = new UserController();

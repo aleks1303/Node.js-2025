@@ -25,9 +25,14 @@ class UserRepository {
 
   public async updateUser(userId: number, dto: Partial<IUser>): Promise<IUser> {
     const users = await read();
-    const user = users.find((user: IUser) => user.id === userId);
-    users[user] = dto.name
-    users[user] = dto.age
+    const user = users.findIndex((user: IUser) => user.id === userId);
+    users[user].name = dto.name;
+    users[user].age = dto.age;
+    users[user].email = dto.email;
+    users[user].password = dto.password;
+    users.push(users[user]);
+    await write(users);
+    return users[user];
   }
 }
 

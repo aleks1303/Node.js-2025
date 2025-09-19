@@ -8,16 +8,35 @@
   },
   {
     "id": 2,
-    "name": "Norman",
+    "name": "Nikita",
     "age": 35,
-    "email": "normangmail.com",
-    "password": "norman431998rev"
+    "email": "nikita@com",
+    "password": "nitita3434edwd"
   },
   {
-    "id": 3,
-    "name": "Norman",
+    "name": "Nikita",
     "age": 35,
-    "email": "norman@gmail.com",
-    "password": "norman431998rev"
+    "email": "nikita@com",
+    "password": "nitita3434edwd"
+  },
+  {
+    "name": "Nikita",
+    "age": 35,
+    "email": "nikita@com",
+    "password": "nitita3434edwd"
+  },
+  {
+    "id": 2,
+    "name": "Nikita",
+    "age": 35,
+    "email": "nikita@com",
+    "password": "nitita3434edwd"
+  },
+  {
+    "id": 2,
+    "name": "Nikita",
+    "age": 35,
+    "email": "nikita@com",
+    "password": "nitita3434edwd"
   }
 ]
