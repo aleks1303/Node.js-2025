@@ -43,7 +43,6 @@ class UserService {
     if (!user) {
       throw new ApiError("User not found", 404);
     }
-    return null;
   }
 }
 

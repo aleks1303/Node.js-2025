@@ -1,42 +1,44 @@
 [
   {
     "id": 1,
-    "name": "Vitaliy",
-    "age": 34,
-    "email": "vital@gmail.com",
-    "password": "svitanok431998rev"
+    "name": "Leo",
+    "age": 13,
+    "email": "LeonNeon@gmail.com",
+    "password": "leo431998rNeon"
   },
   {
     "id": 2,
-    "name": "Mistake",
-    "age": 35,
-    "email": "nikita@com",
-    "password": "nitita3434edwd"
+    "name": "Donatello",
+    "age": 13,
+    "email": "buttyyshacker9000@gmail.com",
+    "password": "buttyyshacker9000rev"
   },
   {
-    "name": "Nikita",
-    "age": 35,
-    "email": "nikita@com",
-    "password": "nitita3434edwd"
+    "id": 3,
+    "name": "Raph",
+    "age": 14,
+    "email": "RedAngel@com",
+    "password": "raph3434edwd"
   },
   {
-    "name": "Nikita",
-    "age": 35,
-    "email": "nikita@com",
-    "password": "nitita3434edwd"
+    "id": 4,
+    "name": "Mikey",
+    "age": 12,
+    "email": "Michael@com",
+    "password": "michael3434michael"
   },
   {
-    "id": 2,
-    "name": "Nikita",
-    "age": 35,
-    "email": "nikita@com",
-    "password": "nitita3434edwd"
+    "id": 5,
+    "name": "Regina",
+    "age": 11,
+    "email": "rina@com",
+    "password": "rina3434regina"
   },
   {
-    "id": 2,
-    "name": "Nikita",
-    "age": 35,
-    "email": "nikita@com",
-    "password": "nitita3434edwd"
+    "id": 6,
+    "name": "Margarita",
+    "age": 13,
+    "email": "rita@com",
+    "password": "rita3434rita"
   }
 ]

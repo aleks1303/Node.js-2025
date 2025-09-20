@@ -34,7 +34,7 @@ class UserRepository {
     return users[user];
   }
 
-  public async deleteUser(userId: number): Promise<void> {
+  public async deleteUser(userId: number): Promise<IUser> {
     const users = await read();
     const user = users.findIndex((user: IUser) => user.id === userId);
     if (user === -1) {
