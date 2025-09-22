@@ -1,5 +1,9 @@
-// import {Router} from "express";
-//
-// const router = Router();
+import { Router } from "express";
 
-// router.get("/", userController.getAllUsers);
+import { userController } from "../controller/user.controller";
+
+const router = Router();
+
+router.get("/", userController.getAllUsers);
+
+export const userRouter = router;
