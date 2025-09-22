@@ -25,5 +25,13 @@ class UserService {
     }
     return await userRepository.createUser(dto);
   }
+
+  public async getUserById(userId: string): Promise<IUser> {
+    const user = await userRepository.getUserById(userId);
+    if (!user) {
+      throw new ApiError("User not found", 400);
+    }
+    return user;
+  }
 }
 export const userService = new UserService();

@@ -26,5 +26,5 @@ const mongodb = config.MONGO_URI;
 
 app.listen(port, async () => {
   await mongoose.connect(mongodb);
-  console.log(`We are listening on https://${host}:${port}`);
+  console.log(`We are listening on http://${host}:${port}`);
 });
