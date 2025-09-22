@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import * as mongoose from "mongoose";
 
 import { config } from "./config/configs";
 import { ApiError } from "./errors/api-error";
@@ -20,6 +21,8 @@ process.on("uncaughtException", (error) => {
 
 const port = config.APP_PORT;
 const host = config.APP_HOST;
-app.listen(port, () => {
+const mongoDb = config.MONGO_URI;
+app.listen(port, async () => {
+  await mongoose.connect(mongoDb);
   console.log(`Server started on https://${host}:${port}`);
 });
