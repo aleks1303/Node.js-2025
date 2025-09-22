@@ -15,7 +15,8 @@ const userSchema = new Schema(
     isDeleted: { type: Boolean, default: false },
   },
   {
-    timestamps: false,
+    timestamps: true,
+    versionKey: false,
   },
 );
 
