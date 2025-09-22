@@ -22,7 +22,6 @@ class UserController {
       next(e);
     }
   }
-
   public async getUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.params.userId;
