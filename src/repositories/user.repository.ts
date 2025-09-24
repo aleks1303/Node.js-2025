@@ -12,5 +12,13 @@ class UserRepository {
   public async getUserById(userId: string): Promise<IUser> {
     return await User.findById(userId);
   }
+
+  public async updateUser(dto: Partial<IUser>, userId: string) {
+    return await User.findByIdAndUpdate(userId, dto, { new: true });
+  }
+
+  public async deleteUser(userId: string): Promise<void> {
+    await User.deleteOne({ _id: userId });
+  }
 }
 export const userRepository = new UserRepository();
