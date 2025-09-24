@@ -16,17 +16,17 @@ class CommonMiddleware {
   //   schema: ObjectSchema,
   //   property: "body" | "query" | "params" = "body",
   // ) {
-  //   try {
-  //     return (req: Request, res: Response, next: NextFunction) => {
-  //       const { error } = schema.validate(req[property]);
+  //   return (req: Request, res: Response, next: NextFunction) => {
+  //     const { error } = schema.validate(req[property]);
+  //     try {
   //       if (error) {
   //         throw new ApiError("Body is invalid", 400);
   //       }
-  //       next()
+  //       next();
+  //     } catch (e) {
+  //       next(e);
   //     }
-  //   } catch (e) {
-  //     next(e);
-  //   }
+  //   };
   // }
 }
 export const commonMiddleware = new CommonMiddleware();
