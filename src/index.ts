@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
-import { config } from "./configs/consfig";
+import { config } from "./configs/config";
 import { ApiError } from "./errors/api.error";
 import { userRouter } from "./routers/user.router";
 
