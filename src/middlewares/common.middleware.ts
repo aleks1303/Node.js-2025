@@ -11,5 +11,15 @@ class CommonMiddleware {
       }
     };
   }
+
+  // public isValidBody(
+  //   schema: ObjectSchema,
+  //   property: "body" | "query" | "params" = "body",
+  // ) {
+  //   (req: Request, res: Response, next: NextFunction) => {
+  //     const {error} = schema.validate(req{property});
+  //
+  //   };
+  // }
 }
 export const commonMiddleware = new CommonMiddleware();
