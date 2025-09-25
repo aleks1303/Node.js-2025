@@ -8,5 +8,14 @@ class UserRepository {
   public async createUser(dto: Partial<IUser>): Promise<IUser> {
     return await User.create(dto);
   }
+  public async getById(userId: string): Promise<IUser> {
+    return await User.findById(userId);
+  }
+  public async update(userId: string, dto: IUser): Promise<IUser> {
+    return await User.findByIdAndUpdate(userId, dto, { new: true });
+  }
+  public async deleteById(userId: string): Promise<void> {
+    await User.deleteOne({ _id: userId });
+  }
 }
 export const userRepository = new UserRepository();
