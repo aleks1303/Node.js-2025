@@ -8,8 +8,9 @@ class CommonMiddleware {
   public isIdValid(key: string) {
     return (req: Request, res: Response, next: NextFunction) => {
       if (!isObjectIdOrHexString(req.params[key])) {
-        throw new ApiError("Id Invalid", 400);
+        throw new ApiError("Invalid ID", 400);
       }
+      next();
     };
   }
 

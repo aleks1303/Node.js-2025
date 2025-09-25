@@ -5,5 +5,4 @@ export const userValidator = Joi.object({
   age: Joi.number().min(1).max(120).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  phone: Joi.string(),
 });
