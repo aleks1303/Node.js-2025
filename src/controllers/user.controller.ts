@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 import { userService } from "../services/user.sevice";
 
@@ -23,21 +24,31 @@ class UserController {
     }
   }
 
-  public async update(req: Request, res: Response, next: NextFunction) {
+  public async getMe(req: Request, res: Response, next: NextFunction) {
     try {
+      const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
+      const user = await userService.getMe(jwtPayload);
+      res.json(user);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async updateMe(req: Request, res: Response, next: NextFunction) {
+    try {
+      const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
       const dto = req.body as IUser;
-      const userId = req.params.userId;
-      const user = await userService.update(userId, dto);
+      const user = await userService.updateMe(jwtPayload, dto);
       res.status(200).json(user);
     } catch (e) {
       next(e);
     }
   }
 
-  public async deleteById(req: Request, res: Response, next: NextFunction) {
+  public async deleteMe(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.params.userId;
-      await userService.deleteById(userId);
+      const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
+      await userService.deleteMe(jwtPayload);
       res.sendStatus(204);
     } catch (e) {
       next(e);

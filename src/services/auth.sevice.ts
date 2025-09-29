@@ -1,6 +1,6 @@
 import { ApiError } from "../errors/api.error";
 import { ITokenPair } from "../interfaces/token.interface";
-import { IUser } from "../interfaces/user.interface";
+import { ISignIn, IUser } from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { passwordService } from "./password.service";
@@ -22,10 +22,24 @@ class AuthService {
     return { user, tokens };
   }
 
-  public async singIn(dto: any): Promise<any> {
-    await this.isEmailExistOrThrow(dto.email);
-    const password = await passwordService.hashPassword(dto.password);
-    return await userRepository.create({ ...dto, password });
+  public async singIn(dto: ISignIn): Promise<any> {
+    const user = await userRepository.getByEmail(dto.email);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    const isPasswordCorrect = await passwordService.comparePassword(
+      dto.password,
+      user.password,
+    );
+    if (!isPasswordCorrect) {
+      throw new ApiError("Invalid credential", 401);
+    }
+    const token = tokenService.generateTokens({
+      userId: user._id,
+      role: user.role,
+    });
+    await tokenRepository.create({ ...token, _userId: user._id });
+    return { user, token };
   }
 
   private async isEmailExistOrThrow(email: string): Promise<void> {

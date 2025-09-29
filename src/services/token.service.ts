@@ -21,8 +21,8 @@ class TokenService {
         token,
         config.JWT_ACCESS_SECRET,
       ) as ITokenPayload;
-    } catch (e) {
-      throw new ApiError(e.message, 404);
+    } catch (e: any) {
+      throw new ApiError(e.message, 401);
     }
   }
 }
