@@ -46,6 +46,7 @@ export default tseslint.config(
     },
     rules: {
       // базові правила
+      indent: ["error", 2, { SwitchCase: 1 }],
       "prettier/prettier": ["error", { endOfLine: "auto" }],
       "no-console": "warn",
 
