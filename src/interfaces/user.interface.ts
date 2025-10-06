@@ -8,6 +8,8 @@ export interface IUser {
   password: string;
   phone?: string;
   role: RoleEnum;
+  isVerified: boolean;
+  isDeleted: boolean;
   createAt: Date;
   updateAt: Date;
 }
