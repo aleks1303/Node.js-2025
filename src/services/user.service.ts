@@ -14,5 +14,9 @@ class UserService {
     }
     return user;
   }
+
+  public async deleteById(userId: string): Promise<void> {
+    return await userRepository.deleteById(userId);
+  }
 }
 export const userService = new UserService();
