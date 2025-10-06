@@ -1,7 +1,7 @@
 export class ApiError extends Error {
   constructor(
     public massage: string,
-    public status: string,
+    public status: number,
   ) {
     super(massage);
     this.status = status;
