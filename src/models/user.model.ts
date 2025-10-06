@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 
+import { RoleEnum } from "../enums/user.enum";
 import { IUser } from "../interfaces/user.interface";
 
 const userSchema = new Schema(
@@ -8,11 +9,10 @@ const userSchema = new Schema(
     age: { type: Number, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
+    role: { type: String, enum: RoleEnum, default: RoleEnum.USER },
     phone: { type: String, required: false },
-    isVerified: { type: Boolean, required: false },
-    isDeleted: { type: Boolean, required: false },
-    createAt: { type: String, required: false },
-    updateAt: { type: String, required: false },
+    isVerified: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,
