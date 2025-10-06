@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use("/users", userRouter);
 
 // app.use((error: ApiError, req: Request, res: Response, next: NextFunction) => {
-//
+//   res.status(error.status || 500).res.send(error.message);
 // });
 
 const port = config.APP_PORT;
