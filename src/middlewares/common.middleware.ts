@@ -17,7 +17,7 @@ class CommonMiddleware {
   //   schema: ObjectSchema,
   //   property: "body" | "query" = "body",
   // ) {
-  //   (req: Request, res: Response, next: NextFunction) => {
+  //   return (req: Request, res: Response, next: NextFunction) => {
   //     const { error } = schema.validate(req[property]);
   //   };
   // }
