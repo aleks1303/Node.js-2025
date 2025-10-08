@@ -5,8 +5,8 @@
 //
 // class TokenService {
 //   public generateToken(payload: ITokenPayload): ITokenPair {
-//     const accessToken = jwt.sign(payload, config.JWT_ACCESS_SECRET as string, {
-//       expiresIn: config.JWT_ACCESS_EXPIRATION as string,
+//     const accessToken = jwt.sign(payload, config.JWT_ACCESS_SECRET, {
+//       expiresIn: config.JWT_ACCESS_EXPIRATION,
 //     });
 //     const refreshToken = jwt.sign(payload, config.JWT_REFRESH_SECRET, {
 //       expiresIn: config.JWT_REFRESH_EXPIRATION,

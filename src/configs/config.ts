@@ -8,9 +8,9 @@ export const config = {
 
   MONGO_URI: process.env.MONGO_URI,
 
-  JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET || "defaultAccess",
+  JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET || "defaultAccessSecret",
   JWT_ACCESS_EXPIRATION: process.env.JWT_ACCESS_EXPIRATION || "15m",
 
-  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || "defaultRefresh",
+  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET || "defaultRefreshSecret",
   JWT_REFRESH_EXPIRATION: process.env.JWT_REFRESH_EXPIRATION || "10d",
 };
