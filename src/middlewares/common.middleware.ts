@@ -13,6 +13,13 @@ class CommonMiddleware {
     };
   }
 
-  public isBodyValid() {}
+  // public isBodyValid(
+  //   schema: ObjectSchema,
+  //   property: "body" | "query" = "body",
+  // ) {
+  //   (req: Request, res: Response, next: NextFunction) => {
+  //     const { error } = schema.validate(req[property]);
+  //   };
+  // }
 }
 export const commonMiddleware = new CommonMiddleware();
