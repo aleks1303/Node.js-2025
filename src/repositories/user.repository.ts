@@ -6,6 +6,10 @@ class UserRepository {
     return await User.find();
   }
 
+  public async signUp(dto: Partial<IUser>): Promise<IUser> {
+    return await User.create(dto);
+  }
+
   public async getById(userId: string): Promise<IUser | null> {
     return await User.findById(userId);
   }

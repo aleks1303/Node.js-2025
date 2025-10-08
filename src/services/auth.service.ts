@@ -1,6 +1,5 @@
 import { ApiError } from "../errors/api.error";
 import { IUser } from "../interfaces/user.interface";
-import { authRepository } from "../repositories/auth.repository";
 import { userRepository } from "../repositories/user.repository";
 import { passwordService } from "./password.service";
 
@@ -8,7 +7,7 @@ class AuthService {
   public async signUp(dto: Partial<IUser>): Promise<IUser> {
     await this.isEmailExist(dto.email);
     const password = await passwordService.hashPassword(dto.password);
-    return await authRepository.signUp({ ...dto, password });
+    return await userRepository.signUp({ ...dto, password });
   }
 
   public async signIn() {}
