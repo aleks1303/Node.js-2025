@@ -8,15 +8,13 @@ const router = Router();
 
 router.get("/", userController.getAllUsers);
 
-router.get("/me", commonMiddleware.isIdValid("userId"), userController.getById);
+router.get("/me", authMiddleware.checkAccessToken, userController.getMe);
 
 router.put("/me", authMiddleware.checkAccessToken, userController.updateMe);
 
-router.delete(
-  "/me",
-  authMiddleware.checkAccessToken,
-  userController.deleteById,
-);
+router.delete("/me", authMiddleware.checkAccessToken, userController.deleteMe);
+
+router.delete("/:userId", userController.deleteById);
 router.get(
   "/:userId",
   commonMiddleware.isIdValid("userId"),

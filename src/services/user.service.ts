@@ -16,12 +16,24 @@ class UserService {
     return user;
   }
 
-  public async updateMe(dto: IUser, jwtPayload: ITokenPayload) {
-    const user = await userRepository.updateMe(dto, jwtPayload);
+  public async getMe(jwtPayload: ITokenPayload): Promise<IUser> {
+    const user = await userRepository.getById(jwtPayload._userId);
+    if (!user) {
+      throw new ApiError("User not found", 400);
+    }
+    return user;
+  }
+
+  public async updateMe(jwtPayload: ITokenPayload, dto: IUser) {
+    const user = await userRepository.updateMe(jwtPayload._userId, dto);
     if (!user) {
       throw new ApiError("User not found", 404);
     }
     return user;
+  }
+
+  public async deleteMe(jwtPayload: ITokenPayload): Promise<void> {
+    return await userRepository.deleteById(jwtPayload._userId);
   }
 
   public async deleteById(userId: string): Promise<void> {
