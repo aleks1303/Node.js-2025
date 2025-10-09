@@ -1,3 +1,4 @@
+import { TokenTypeEnum } from "../enums/token-type.enum";
 import { ApiError } from "../errors/api.error";
 import { IUser } from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
@@ -32,6 +33,30 @@ class AuthService {
     if (!isPasswordCorrect) {
       throw new ApiError("Invalid credentials", 401);
     }
+
+    await tokenRepository.deleteByParams({ _userId: user._id });
+    const tokens = tokenService.generateToken({
+      _userId: user._id,
+      role: user.role,
+    });
+    await tokenRepository.create({ ...tokens, _userId: user._id });
+    return { user, tokens };
+  }
+
+  public async refresh(refreshTokenOld: string) {
+    const payload = tokenService.verifyToken(
+      refreshTokenOld,
+      TokenTypeEnum.REFRESH,
+    );
+    const pair = await tokenRepository.findByParams({
+      refreshToken: refreshTokenOld,
+    });
+    if (!pair) {
+      throw new ApiError("Token is not valid", 401);
+    }
+
+    const user = await userRepository.getById(payload._userId);
+    await tokenRepository.deleteByParams({ refreshToken: refreshTokenOld });
     const tokens = tokenService.generateToken({
       _userId: user._id,
       role: user.role,
