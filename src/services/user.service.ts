@@ -15,6 +15,14 @@ class UserService {
     return user;
   }
 
+  // public async updateMe(dto: Partial<IUser>, userId: string) {
+  //   const user = await userRepository.updateMe(dto, userId);
+  //   if (!user) {
+  //     throw new ApiError("User not found", 404);
+  //   }
+  //   return user;
+  // }
+
   public async deleteById(userId: string): Promise<void> {
     return await userRepository.deleteById(userId);
   }

@@ -6,15 +6,17 @@ import { commonMiddleware } from "../middlewares/common.middleware";
 const router = Router();
 
 router.get("/", userController.getAllUsers);
+
+router.get("/me", commonMiddleware.isIdValid("userId"), userController.getById);
+
+router.delete(
+  "/me",
+  commonMiddleware.isIdValid("userId"),
+  userController.deleteById,
+);
 router.get(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
   userController.getById,
 );
-router.delete(
-  "/:userId",
-  commonMiddleware.isIdValid("userId"),
-  userController.deleteById,
-);
-
 export const userRouter = router;

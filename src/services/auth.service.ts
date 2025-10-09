@@ -2,6 +2,7 @@ import { ApiError } from "../errors/api.error";
 import { IUser } from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
+import { SignIn } from "../types/SignIn";
 import { UserWithTokens } from "../types/UserWithTokens";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
@@ -19,7 +20,25 @@ class AuthService {
     return { user, tokens };
   }
 
-  public async signIn() {}
+  public async signIn(dto: SignIn): Promise<UserWithTokens> {
+    const user = await userRepository.getByEmail(dto.email);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    const isPasswordCorrect = await passwordService.comparePassword(
+      dto.password,
+      user.password,
+    );
+    if (!isPasswordCorrect) {
+      throw new ApiError("Invalid credentials", 401);
+    }
+    const tokens = tokenService.generateToken({
+      _userId: user._id,
+      role: user.role,
+    });
+    await tokenRepository.create({ ...tokens, _userId: user._id });
+    return { user, tokens };
+  }
 
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByEmail(email);
