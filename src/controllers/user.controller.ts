@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ITokenPayload } from "../interfaces/token.interface";
+import { IUser } from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
 
 class UserController {
@@ -22,16 +24,16 @@ class UserController {
     }
   }
 
-  // public async updateMe(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const dto = req.body as IUser;
-  //     const userId = req.params.userId;
-  //     const user = await userService.updateMe(dto, userId);
-  //     res.json(user);
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
+  public async updateMe(req: Request, res: Response, next: NextFunction) {
+    try {
+      const dto = req.body as IUser;
+      const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
+      const user = await userService.updateMe(dto, jwtPayload);
+      res.status(201).json(user);
+    } catch (e) {
+      next(e);
+    }
+  }
 
   public async deleteById(req: Request, res: Response, next: NextFunction) {
     try {
