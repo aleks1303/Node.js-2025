@@ -19,10 +19,12 @@ class TokenService {
   public verifyToken(token: string, type: TokenTypeEnum): ITokenPayload {
     try {
       let secret: string;
+
       switch (type) {
         case TokenTypeEnum.ACCESS:
           secret = config.JWT_ACCESS_SECRET;
           break;
+
         case TokenTypeEnum.REFRESH:
           secret = config.JWT_REFRESH_SECRET;
           break;
@@ -30,7 +32,7 @@ class TokenService {
       return jwt.verify(token, secret) as ITokenPayload;
     } catch (e) {
       console.error(e);
-      throw new ApiError("Token invalid", 401);
+      throw new ApiError("Token invalid hh", 401);
     }
   }
 }

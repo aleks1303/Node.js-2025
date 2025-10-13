@@ -25,7 +25,7 @@ class UserController {
 
   public async getMe(req: Request, res: Response, next: NextFunction) {
     try {
-      const jwtPayload = req.res.locals.jwtParams as ITokenPayload;
+      const jwtPayload = req.res.locals.JwtPayload as ITokenPayload;
       const user = await userService.getMe(jwtPayload);
       res.json(user);
     } catch (e) {

@@ -10,7 +10,7 @@ class UserRepository {
     return await User.create(dto);
   }
 
-  public async getById(userId: string): Promise<IUser> {
+  public async getById(userId: string): Promise<IUser | null> {
     return await User.findById(userId);
   }
 
