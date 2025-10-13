@@ -1,17 +1,17 @@
 import Joi from "joi";
 
-export class UserValidator {
-  private name = Joi.string().min(3).max(20).trim().required();
-  private age = Joi.number().min(1).max(120).required();
-  private email = Joi.string().email().lowercase().required();
-  private password = Joi.string().min(6).required();
+class UserValidator {
+  private name = Joi.string().min(3).max(20).trim();
+  private age = Joi.number().min(1).max(120);
+  private email = Joi.string().email().lowercase();
+  private password = Joi.string().min(6);
   private phone = Joi.string();
 
   public create = Joi.object({
-    name: this.name,
-    age: this.age,
-    email: this.email,
-    password: this.password,
+    name: this.name.required(),
+    age: this.age.required(),
+    email: this.email.required(),
+    password: this.password.required(),
     phone: this.phone,
   });
 
@@ -21,3 +21,4 @@ export class UserValidator {
     phone: this.phone,
   });
 }
+export const userValidator = new UserValidator();
