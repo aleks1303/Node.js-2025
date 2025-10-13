@@ -23,8 +23,8 @@ class CommonMiddleware {
     property: "body" | "query" | "params" = "body",
   ) {
     return (req: Request, res: Response, next: NextFunction) => {
+      const { error } = schema.validate(req[property]);
       try {
-        const { error } = schema.validate(req[property]);
         if (error) {
           throw new ApiError("Body is not valid", 409);
         }
