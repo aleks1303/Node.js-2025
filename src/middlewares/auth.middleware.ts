@@ -17,6 +17,7 @@ class AuthMiddleware {
         throw new ApiError("Token is not provided", 401);
       }
       const accessToken = header.split("Bearer ")[1];
+
       const payload = tokenService.verifyToken(
         accessToken,
         TokenTypeEnum.ACCESS,
