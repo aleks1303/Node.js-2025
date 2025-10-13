@@ -1,22 +1,30 @@
 import { ApiError } from "../errors/api.error";
 import { IUser } from "../interfaces/user.interface";
-import { authRepository } from "../repositories/auth.repository";
+import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
+import { IUserWithTokens } from "../types/IUserWithTokens";
 import { passwordService } from "./password.service";
+import { tokenService } from "./token.service";
 
 class AuthService {
-  public async signUp(dto: Partial<IUser>): Promise<IUser> {
-    await authService.isEmailExist(dto.email);
+  public async signUp(dto: Partial<IUser>): Promise<IUserWithTokens> {
+    await this.isEmailExist(dto.email);
     const password = await passwordService.hashPassword(dto.password);
-    return await authRepository.signUp({ ...dto, password });
+    const user = await userRepository.signUp({ ...dto, password });
+    const tokens = tokenService.generateToken({
+      userId: user._id,
+      role: user.role,
+    });
+    await tokenRepository.createToken({ ...tokens, _userId: user._id });
+
+    return { user, tokens };
   }
 
-  private async isEmailExist(email: string): Promise<IUser> {
+  private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByEmail(email);
-    if (email) {
+    if (user) {
       throw new ApiError("Email already exist", 409);
     }
-    return user;
   }
 }
 export const authService = new AuthService();
