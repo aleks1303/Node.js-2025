@@ -20,6 +20,8 @@ class AuthService {
     return { user, tokens };
   }
 
+  public async SignIn() {}
+
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByEmail(email);
     if (user) {

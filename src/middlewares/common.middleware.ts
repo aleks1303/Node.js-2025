@@ -9,7 +9,7 @@ class CommonMiddleware {
     return (req: Request, res: Response, next: NextFunction) => {
       try {
         if (!isObjectIdOrHexString(req.params[key])) {
-          throw new ApiError("ID is not valid", 409);
+          throw new ApiError("ID is not valid", 400);
         }
         next();
       } catch (e) {
@@ -26,7 +26,7 @@ class CommonMiddleware {
       const { error } = schema.validate(req[property]);
       try {
         if (error) {
-          throw new ApiError("Body is not valid", 409);
+          throw new ApiError("Body is not valid", 400);
         }
         next();
       } catch (e) {
