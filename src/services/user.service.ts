@@ -24,6 +24,18 @@ class UserService {
     return user;
   }
 
+  public async updateMe(jwtPayload: ITokenPayload, dto: IUser): Promise<IUser> {
+    const user = await userRepository.update(jwtPayload.userId, dto);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    return user;
+  }
+
+  public async deleteMe(jwtPayload: ITokenPayload): Promise<void> {
+    await userRepository.deleteById(jwtPayload.userId);
+  }
+
   public async deleteById(userId: string): Promise<void> {
     await userRepository.deleteById(userId);
   }

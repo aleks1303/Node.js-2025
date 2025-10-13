@@ -11,6 +11,6 @@ router.post(
   commonMiddleware.isBodyValid(userValidator.create),
   authController.signUp,
 );
-// router.get("/sign-in", authController.signIn);
+router.post("/sign-in", authController.signIn);
 
 export const authRouter = router;
