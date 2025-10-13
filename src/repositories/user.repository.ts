@@ -11,7 +11,7 @@ class UserRepository {
   }
 
   public async getById(userId: string): Promise<IUser> {
-    return await User.findOne({ _id: userId });
+    return await User.findById(userId);
   }
 
   public async deleteById(userId: string): Promise<void> {

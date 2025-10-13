@@ -2,7 +2,7 @@ import { ApiError } from "../errors/api.error";
 import { IUser } from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
-import { IUserWithTokens } from "../types/IUserWithTokens";
+import { IUserWithTokens } from "../types/userWithTokens";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 

@@ -5,5 +5,9 @@ class TokenRepository {
   public async createToken(dto: Partial<IToken>): Promise<IToken> {
     return await Token.create(dto);
   }
+
+  public async findByParams(params: Partial<IToken>): Promise<IToken> {
+    return await Token.findOne(params);
+  }
 }
 export const tokenRepository = new TokenRepository();

@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ITokenPayload } from "../interfaces/token.interface";
 import { userService } from "../services/user.service";
 
 class UserController {
@@ -16,6 +17,16 @@ class UserController {
     try {
       const userId = req.params.userId;
       const user = await userService.getById(userId);
+      res.json(user);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async getMe(req: Request, res: Response, next: NextFunction) {
+    try {
+      const jwtPayload = req.res.locals.jwtParams as ITokenPayload;
+      const user = await userService.getMe(jwtPayload);
       res.json(user);
     } catch (e) {
       next(e);
