@@ -43,7 +43,7 @@ class AuthService {
     return { user, tokens };
   }
 
-  public async refresh(refreshTokenOld: string) {
+  public async refresh(refreshTokenOld: string): Promise<UserWithTokens> {
     const payload = tokenService.verifyToken(
       refreshTokenOld,
       TokenTypeEnum.REFRESH,
