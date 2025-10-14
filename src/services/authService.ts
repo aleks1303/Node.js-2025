@@ -1,3 +1,4 @@
+import { TokenTypeEnum } from "../enums/token.enum";
 import { ApiError } from "../errors/api.error";
 import { IUser } from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
@@ -42,7 +43,27 @@ class AuthService {
     return { user, tokens };
   }
 
-  public async refresh(refreshTokenOld: string) {}
+  public async refresh(refreshTokenOld: string) {
+    const payload = tokenService.verifyToken(
+      refreshTokenOld,
+      TokenTypeEnum.REFRESH,
+    );
+    const pair = await tokenRepository.findByParams({
+      refreshToken: refreshTokenOld,
+    });
+    if (!pair) {
+      throw new ApiError("Token is not valid", 401);
+    }
+    const user = await userRepository.getById(payload.userId);
+    await tokenRepository.deleteByParams({ refreshToken: refreshTokenOld });
+    const tokens = tokenService.generateToken({
+      userId: user._id,
+      role: user.role,
+    });
+    await tokenRepository.createToken({ ...tokens, _userId: user._id });
+
+    return { user, tokens };
+  }
 
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByEmail(email);
