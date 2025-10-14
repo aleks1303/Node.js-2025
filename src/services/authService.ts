@@ -64,7 +64,6 @@ class AuthService {
 
     return { user, tokens };
   }
-
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByEmail(email);
     if (user) {
