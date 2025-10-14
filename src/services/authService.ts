@@ -3,12 +3,12 @@ import { IUser } from "../interfaces/user.interface";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { SignIn } from "../types/signIn";
-import { IUserWithTokens } from "../types/userWithTokens";
+import { UserWithTokens } from "../types/userWithTokens";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 
 class AuthService {
-  public async signUp(dto: Partial<IUser>): Promise<IUserWithTokens> {
+  public async signUp(dto: Partial<IUser>): Promise<UserWithTokens> {
     await this.isEmailExist(dto.email);
     const password = await passwordService.hashPassword(dto.password);
     const user = await userRepository.signUp({ ...dto, password });
@@ -21,7 +21,7 @@ class AuthService {
     return { user, tokens };
   }
 
-  public async SignIn(dto: SignIn): Promise<IUserWithTokens> {
+  public async SignIn(dto: SignIn): Promise<UserWithTokens> {
     const user = await userRepository.getByEmail(dto.email);
     if (!user) {
       throw new ApiError("User not found", 404);
@@ -41,6 +41,8 @@ class AuthService {
 
     return { user, tokens };
   }
+
+  public async refresh(refreshTokenOld: string) {}
 
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByEmail(email);

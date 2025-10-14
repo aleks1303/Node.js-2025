@@ -25,11 +25,14 @@ class AuthController {
     }
   }
 
-  // public async refresh(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // }
+  public async refresh(req: Request, res: Response, next: NextFunction) {
+    try {
+      const refreshTokenOld = req.headers.authorization.split(" ")[1];
+      const tokens = await authService.refresh(refreshTokenOld);
+      res.json(tokens);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 export const authController = new AuthController();

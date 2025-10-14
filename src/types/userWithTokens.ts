@@ -1,7 +1,7 @@
 import { ITokenPair } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 
-export type IUserWithTokens = {
+export type UserWithTokens = {
   user: IUser;
   tokens: ITokenPair;
 };
