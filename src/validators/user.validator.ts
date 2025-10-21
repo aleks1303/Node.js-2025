@@ -7,8 +7,12 @@ class UserValidator {
   private password = Joi.string().min(6).required();
   private phone = Joi.string();
 
-  public create() {
-    name = this.name;
-  }
+  public create = Joi.object({
+    name: this.name,
+    age: this.age,
+    email: this.email,
+    password: this.password,
+    phone: this.phone,
+  });
 }
 export const userValidator = new UserValidator();
