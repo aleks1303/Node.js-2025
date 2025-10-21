@@ -3,6 +3,7 @@ import * as mongoose from "mongoose";
 
 import { configs } from "./configs/config";
 import { ApiError } from "./errors/api.error";
+import { authRouter } from "./routes/authRouter";
 import { userRouter } from "./routes/user.router";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use("/users", userRouter);
+app.use("/auth", authRouter);
 
 process.on("uncaughtException", (error) => {
   console.log("uncaughtException", error.message, error.stack);
