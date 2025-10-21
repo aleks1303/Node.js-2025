@@ -5,7 +5,7 @@ class UserRepository {
   public async getAllUsers(): Promise<IUser[]> {
     return await User.find();
   }
-  public async createMe(dto: Partial<IUser>) {
+  public async signUp(dto: Partial<IUser>) {
     return await User.create(dto);
   }
   public async getById(userId: string): Promise<IUser> {
