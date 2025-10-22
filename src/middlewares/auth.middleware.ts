@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
+import { TokenEnum } from "../enums/token.enum";
 import { ApiError } from "../errors/api.error";
+import { tokenRepository } from "../repositories/tokenRepository";
+import { tokenService } from "../services/token.service";
 
 class AuthMiddleware {
   public async checkAccessToken(
@@ -13,6 +16,39 @@ class AuthMiddleware {
       if (!header) {
         throw new ApiError("Header is provided", 401);
       }
+      const accessToken = header.split("Bearer ")[1];
+      const payload = tokenService.verifyToken(accessToken, TokenEnum.ACCESS);
+      const pair = await tokenRepository.findByParams({ accessToken });
+      if (!pair) {
+        throw new ApiError("Token is not valid", 401);
+      }
+      req.res.locals.jwtPayload = payload;
+      req.res.locals.accessToken = accessToken;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async checkRefreshToken(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const header = req.headers.authorization;
+      if (!header) {
+        throw new ApiError("Header is provided", 401);
+      }
+      const refreshToken = header.split("Bearer ")[1];
+      const payload = tokenService.verifyToken(refreshToken, TokenEnum.ACCESS);
+      const pair = await tokenRepository.findByParams({ refreshToken });
+      if (!pair) {
+        throw new ApiError("Token is not valid", 401);
+      }
+      req.res.locals.jwtPayload = payload;
+      req.res.locals.refreshToken = refreshToken;
+      next();
     } catch (e) {
       next(e);
     }
