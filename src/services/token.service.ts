@@ -13,5 +13,7 @@ class TokenService {
     } as SignOptions);
     return { accessToken, refreshToken };
   }
+
+  //   public verifyToken(token: string, payload: ITokenPayload) {}
 }
 export const tokenService = new TokenService();
