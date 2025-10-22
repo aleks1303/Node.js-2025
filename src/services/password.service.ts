@@ -1,13 +1,14 @@
 import bcrypt from "bcrypt";
 
-import { IUser } from "../interfaces/user.interface";
-
 class PasswordService {
-  public hashPassword(password: string) {
-    return bcrypt.hash(password, 10);
+  public async hashPassword(password: string) {
+    return await bcrypt.hash(password, 10);
   }
-  public comparePassword(hashedPassword: string, dto: Partial<IUser>) {
-    return bcrypt.compare(dto.password, hashedPassword);
+  public async comparePassword(
+    password: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    return await bcrypt.compare(password, hashedPassword);
   }
 }
 export const passwordService = new PasswordService();

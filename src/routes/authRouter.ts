@@ -12,4 +12,12 @@ router.post(
   authController.signUp,
 );
 
+router.post(
+  "/sign-in",
+  commonMiddleware.isBodyValid(userValidator.signIn),
+  authController.singIn,
+);
+
+router.post("/refresh", authController.refresh);
+
 export const authRouter = router;
