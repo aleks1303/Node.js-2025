@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 
+import { IUser } from "../interfaces/user.interface";
 import { authService } from "../services/authService";
 
 class AuthController {
   public async signUp(req: Request, res: Response, next: NextFunction) {
     try {
-      const dto = req.body;
+      const dto = req.body as IUser;
       const user = await authService.signUp(dto);
-      res.status(200).send(user);
+      res.status(201).json(user);
     } catch (e) {
       next(e);
     }

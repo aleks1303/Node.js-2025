@@ -4,11 +4,11 @@ export interface IToken {
   _id: string;
   accessToken: string;
   refreshToken: string;
-  userId: string;
+  _userId: string;
 }
 
 export interface ITokenPayload {
-  _userId: string;
+  userId: string;
   role: RoleEnum;
 }
 
