@@ -12,11 +12,11 @@ class AuthService {
   }
 
   private async isEmailExist(email: string): Promise<IUser> {
-    const emailExist = await userRepository.getByEmail(email);
-    if (!emailExist) {
+    const user = await userRepository.getByEmail(email);
+    if (user) {
       throw new ApiError("Email already exist", 401);
     }
-    return emailExist;
+    return user;
   }
 }
 export const authService = new AuthService();
