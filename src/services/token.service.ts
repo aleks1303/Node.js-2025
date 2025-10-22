@@ -14,6 +14,21 @@ class TokenService {
     return { accessToken, refreshToken };
   }
 
-  //   public verifyToken(token: string, payload: ITokenPayload) {}
+  // public verifyToken(token: string, type: TokenEnum): ITokenPayload {
+  //   try {
+  //     let secret: string;
+  //     switch (type) {
+  //       case TokenEnum.ACCESS:
+  //         secret = configs.JWT_ACCESS_SECRET;
+  //         break;
+  //       case TokenEnum.REFRESH:
+  //         secret = configs.JWT_REFRESH_SECRET;
+  //         break;
+  //     }
+  //   } catch (e) {
+  //     console.error(e);
+  //     throw new ApiError("Token is not valid", 401);
+  //   }
+  // }
 }
 export const tokenService = new TokenService();
