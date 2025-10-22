@@ -1,3 +1,5 @@
+import { RoleEnum } from "../enums/user.enum";
+
 export interface IToken {
   _id: string;
   accessToken: string;
@@ -5,7 +7,12 @@ export interface IToken {
   userId: string;
 }
 
-// export interface ITokenPayload {
-//    _id: string,
-//    role:
-// }
+export interface ITokenPayload {
+  _userId: string;
+  role: RoleEnum;
+}
+
+export interface ITokenPair {
+  accessToken: string;
+  refreshToken: string;
+}
