@@ -14,5 +14,16 @@ class UserValidator {
     password: this.password,
     phone: this.phone,
   });
+
+  public update = Joi.object({
+    name: this.name,
+    age: this.age,
+    phone: this.phone,
+  });
+
+  public signIn = Joi.object({
+    email: this.email,
+    password: this.password,
+  });
 }
 export const userValidator = new UserValidator();
