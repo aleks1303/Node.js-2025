@@ -41,7 +41,7 @@ class AuthMiddleware {
         throw new ApiError("Header is provided", 401);
       }
       const refreshToken = header.split("Bearer ")[1];
-      const payload = tokenService.verifyToken(refreshToken, TokenEnum.ACCESS);
+      const payload = tokenService.verifyToken(refreshToken, TokenEnum.REFRESH);
       const pair = await tokenRepository.findByParams({ refreshToken });
       if (!pair) {
         throw new ApiError("Token is not valid", 401);
