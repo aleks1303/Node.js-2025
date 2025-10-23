@@ -5,6 +5,7 @@ import { tokenRepository } from "../repositories/tokenRepository";
 import { userRepository } from "../repositories/user.repository";
 import { SignIn } from "../types/user.type/singIn";
 import { UserWithToken } from "../types/user.type/userWithToken.type";
+import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 
@@ -44,7 +45,7 @@ class AuthService {
       role: user.role,
     });
     await tokenRepository.createToken({ ...tokens, _userId: user._id });
-
+    await emailService.sendMail("aleksbulda13@gmail.com");
     return { user, tokens };
   }
 
