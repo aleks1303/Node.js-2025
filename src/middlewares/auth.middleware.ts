@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import { TokenEnum } from "../enums/token.enum";
 import { ApiError } from "../errors/api.error";
-import { tokenRepository } from "../repositories/tokenRepository";
+import { tokenRepository } from "../repositories/token.repository";
 import { tokenService } from "../services/token.service";
 
 class AuthMiddleware {

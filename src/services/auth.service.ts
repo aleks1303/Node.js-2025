@@ -2,7 +2,7 @@ import { EmailTypeEnum } from "../enums/email-type.enum";
 import { ApiError } from "../errors/api.error";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
-import { tokenRepository } from "../repositories/tokenRepository";
+import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { SignIn } from "../types/user.type/singIn";
 import { UserWithToken } from "../types/user.type/userWithToken.type";
@@ -23,6 +23,7 @@ class AuthService {
     await emailService.sendMail(
       "aleksbulda13@gmail.com",
       EmailTypeEnum.WELCOME,
+      { name: user.name },
     );
     return { user, tokens };
   }
@@ -64,6 +65,23 @@ class AuthService {
     await tokenRepository.createToken({ ...tokens, _userId: payload.userId });
 
     return tokens;
+  }
+
+  public async logout(userId: string, refreshToken: string): Promise<void> {
+    const user = await userRepository.getById(userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    await emailService.sendMail(
+      "aleksbulda13@gmail.com",
+      EmailTypeEnum.LOGOUT,
+      { name: user.name },
+    );
+    await tokenRepository.logout({ refreshToken });
+  }
+
+  public async logoutAll(refreshToken: string): Promise<void> {
+    return await tokenRepository.logoutAll({ refreshToken });
   }
 
   private async isEmailExist(email: string): Promise<IUser> {

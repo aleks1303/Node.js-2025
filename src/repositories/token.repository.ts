@@ -10,6 +10,14 @@ class TokenRepository {
     return await Token.findOne(params);
   }
 
+  public async logout(params: { refreshToken: string }): Promise<void> {
+    await Token.deleteOne(params);
+  }
+
+  public async logoutAll(params: { refreshToken: string }): Promise<void> {
+    await Token.deleteMany(params);
+  }
+
   public async deleteByParams(params: Partial<IToken>): Promise<void> {
     await Token.deleteOne(params);
   }

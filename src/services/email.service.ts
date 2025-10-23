@@ -6,6 +6,7 @@ import HbsTransporter from "nodemailer-express-handlebars";
 import { configs } from "../configs/config";
 import { EmailConstant } from "../constants/email.constant";
 import { EmailTypeEnum } from "../enums/email-type.enum";
+import { EmailTypeToPayload } from "../types/email.type/email-type-to-payload.type";
 
 class EmailService {
   private transporter: Transporter;
@@ -30,9 +31,13 @@ class EmailService {
     };
     this.transporter.use("compile", HbsTransporter(hbsOptions));
   }
-  public async sendMail(to: string, type: EmailTypeEnum): Promise<void> {
+  public async sendMail<T extends EmailTypeEnum>(
+    to: string,
+    type: T,
+    context: EmailTypeToPayload[T],
+  ): Promise<void> {
     const { subject, template } = EmailConstant[type];
-    const options = { to, subject, template };
+    const options = { to, subject, template, context };
     await this.transporter.sendMail(options);
   }
 }
