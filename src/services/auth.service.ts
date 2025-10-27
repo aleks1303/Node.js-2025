@@ -72,12 +72,12 @@ class AuthService {
     if (!user) {
       throw new ApiError("User not found", 404);
     }
+    await tokenRepository.logout({ refreshToken });
     await emailService.sendMail(
       "aleksbulda13@gmail.com",
       EmailTypeEnum.LOGOUT,
       { name: user.name },
     );
-    await tokenRepository.logout({ refreshToken });
   }
 
   public async logoutAll(refreshToken: string): Promise<void> {
