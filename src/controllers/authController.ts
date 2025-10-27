@@ -3,6 +3,10 @@ import { NextFunction, Request, Response } from "express";
 import { ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 import { authService } from "../services/auth.service";
+import {
+  ForgotPasswordSend,
+  ForgotPasswordSet,
+} from "../types/forgot-password.type/forgot-password.type";
 import { SignIn } from "../types/user.type/singIn";
 
 class AuthController {
@@ -58,6 +62,35 @@ class AuthController {
       const refreshToken = req.res.locals.refreshToken as string;
       await authService.logoutAll(refreshToken);
       res.status(200).json({ message: "You logout all devices" });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async forgotPasswordSendEmail(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const dto = req.body as ForgotPasswordSend;
+      await authService.forgotPasswordSendEmail(dto);
+      res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async forgotPasswordSet(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const jwtPayload = req.res.locals.jwtPayload;
+      const dto = req.body as ForgotPasswordSet;
+      await authService.forgotPasswordSet(dto, jwtPayload);
+      res.sendStatus(204);
     } catch (e) {
       next(e);
     }

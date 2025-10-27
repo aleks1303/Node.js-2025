@@ -8,8 +8,8 @@ class UserRepository {
   public async signUp(dto: Partial<IUser>) {
     return await User.create(dto);
   }
-  public async updateById(userId: string, dto: IUser): Promise<IUser> {
-    return await User.findByIdAndUpdate(userId, dto);
+  public async updateById(userId: string, dto: Partial<IUser>): Promise<IUser> {
+    return await User.findByIdAndUpdate(userId, dto, { new: true });
   }
   public async getById(userId: string): Promise<IUser> {
     return await User.findById(userId);

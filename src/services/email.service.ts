@@ -32,11 +32,12 @@ class EmailService {
     this.transporter.use("compile", HbsTransporter(hbsOptions));
   }
   public async sendMail<T extends EmailTypeEnum>(
-    to: string,
     type: T,
+    to: string,
     context: EmailTypeToPayload[T],
   ): Promise<void> {
     const { subject, template } = EmailConstant[type];
+    context["frontUrl"] = configs.APP_FRONT_URL;
     const options = { to, subject, template, context };
     await this.transporter.sendMail(options);
   }

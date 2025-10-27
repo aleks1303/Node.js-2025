@@ -1,9 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { TokenEnum } from "../enums/token.enum";
 import { ApiError } from "../errors/api.error";
+import { actionTokenRepository } from "../repositories/action-token.repository";
 import { tokenRepository } from "../repositories/token.repository";
 import { tokenService } from "../services/token.service";
+import { ForgotPasswordSet } from "../types/forgot-password.type/forgot-password.type";
 
 class AuthMiddleware {
   public async checkAccessToken(
@@ -48,6 +51,29 @@ class AuthMiddleware {
       }
       req.res.locals.jwtPayload = payload;
       req.res.locals.refreshToken = refreshToken;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async checkActionToken(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const { token } = req.body as ForgotPasswordSet;
+
+      const payload = tokenService.verifyActionToken(
+        token,
+        ActionTokenTypeEnum.FORGOT_PASSWORD,
+      );
+      const actionTokenEntity = await actionTokenRepository.getByToken(token);
+      if (!actionTokenEntity) {
+        throw new ApiError("Token is not valid", 401);
+      }
+      req.res.locals.jwtPayload = payload;
       next();
     } catch (e) {
       next(e);

@@ -1,9 +1,15 @@
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { EmailTypeEnum } from "../enums/email-type.enum";
 import { ApiError } from "../errors/api.error";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
+import { actionTokenRepository } from "../repositories/action-token.repository";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
+import {
+  ForgotPasswordSend,
+  ForgotPasswordSet,
+} from "../types/forgot-password.type/forgot-password.type";
 import { SignIn } from "../types/user.type/singIn";
 import { UserWithToken } from "../types/user.type/userWithToken.type";
 import { emailService } from "./email.service";
@@ -20,11 +26,9 @@ class AuthService {
       role: user.role,
     });
     await tokenRepository.createToken({ ...tokens, _userId: user._id });
-    await emailService.sendMail(
-      "aleksbulda13@gmail.com",
-      EmailTypeEnum.WELCOME,
-      { name: user.name },
-    );
+    await emailService.sendMail(EmailTypeEnum.WELCOME, user.email, {
+      name: user.name,
+    });
     return { user, tokens };
   }
 
@@ -73,15 +77,50 @@ class AuthService {
       throw new ApiError("User not found", 404);
     }
     await tokenRepository.logout({ refreshToken });
-    await emailService.sendMail(
-      "aleksbulda13@gmail.com",
-      EmailTypeEnum.LOGOUT,
-      { name: user.name },
-    );
+    await emailService.sendMail(EmailTypeEnum.LOGOUT, user.email, {
+      name: user.name,
+    });
   }
 
   public async logoutAll(refreshToken: string): Promise<void> {
     return await tokenRepository.logoutAll({ refreshToken });
+  }
+
+  public async forgotPasswordSendEmail(dto: ForgotPasswordSend): Promise<void> {
+    const user = await userRepository.getByEmail(dto.email);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    const actionToken = tokenService.generateActionToken(
+      {
+        userId: user._id,
+        role: user.role,
+      },
+      ActionTokenTypeEnum.FORGOT_PASSWORD,
+    );
+    await actionTokenRepository.create({
+      type: ActionTokenTypeEnum.FORGOT_PASSWORD,
+      _userId: user._id,
+      actionToken,
+    });
+    await emailService.sendMail(EmailTypeEnum.FORGOT_PASSWORD, user.email, {
+      name: user.name,
+      email: user.email,
+      actionToken: actionToken,
+    });
+  }
+
+  public async forgotPasswordSet(
+    dto: ForgotPasswordSet,
+    jwtPayload: ITokenPayload,
+  ) {
+    const password = await passwordService.hashPassword(dto.password);
+    await userRepository.updateById(jwtPayload.userId, { password });
+    await actionTokenRepository.deleteManyByParams({
+      _userId: jwtPayload.userId,
+      type: ActionTokenTypeEnum.FORGOT_PASSWORD,
+    });
+    await tokenRepository.deleteByParams({ _userId: jwtPayload.userId });
   }
 
   private async isEmailExist(email: string): Promise<IUser> {
