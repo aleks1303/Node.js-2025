@@ -8,6 +8,7 @@ import {
   ForgotPasswordSet,
 } from "../types/forgot-password.type/forgot-password.type";
 import { SignIn } from "../types/user.type/singIn";
+import { VerifyType } from "../types/verify.type/verify.type";
 
 class AuthController {
   public async signUp(req: Request, res: Response, next: NextFunction) {
@@ -57,6 +58,7 @@ class AuthController {
       next(e);
     }
   }
+
   public async logoutAll(req: Request, res: Response, next: NextFunction) {
     try {
       const refreshToken = req.res.locals.refreshToken as string;
@@ -91,6 +93,26 @@ class AuthController {
       const dto = req.body as ForgotPasswordSet;
       await authService.forgotPasswordSet(dto, jwtPayload);
       res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async verify(req: Request, res: Response, next: NextFunction) {
+    try {
+      const dto = req.body as VerifyType;
+      await authService.verify(dto);
+      res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async verifyEmail(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { token } = req.params;
+      await authService.verifyTokenEmail(token);
+      res.sendStatus(200);
     } catch (e) {
       next(e);
     }

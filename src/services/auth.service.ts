@@ -12,6 +12,7 @@ import {
 } from "../types/forgot-password.type/forgot-password.type";
 import { SignIn } from "../types/user.type/singIn";
 import { UserWithToken } from "../types/user.type/userWithToken.type";
+import { VerifyType } from "../types/verify.type/verify.type";
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
@@ -25,9 +26,18 @@ class AuthService {
       userId: user._id,
       role: user.role,
     });
+    const actionToken = tokenService.generateActionToken(
+      {
+        userId: user._id,
+        role: user.role,
+      },
+      ActionTokenTypeEnum.FORGOT_PASSWORD,
+    );
     await tokenRepository.createToken({ ...tokens, _userId: user._id });
     await emailService.sendMail(EmailTypeEnum.WELCOME, user.email, {
       name: user.name,
+      email: user.email,
+      actionToken: actionToken,
     });
     return { user, tokens };
   }
@@ -121,6 +131,44 @@ class AuthService {
       type: ActionTokenTypeEnum.FORGOT_PASSWORD,
     });
     await tokenRepository.deleteByParams({ _userId: jwtPayload.userId });
+  }
+
+  public async verify(dto: VerifyType) {
+    const user = await userRepository.getByEmail(dto.email);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    const verifyToken = tokenService.generateActionToken(
+      {
+        userId: user._id,
+        role: user.role,
+      },
+      ActionTokenTypeEnum.VERIFY_EMAIL,
+    );
+    await actionTokenRepository.create({
+      type: ActionTokenTypeEnum.VERIFY_EMAIL,
+      _userId: user._id,
+      actionToken: verifyToken,
+    });
+
+    await emailService.sendMail(EmailTypeEnum.WELCOME, user.email, {
+      email: user.email,
+      name: user.name,
+      actionToken: verifyToken,
+    });
+  }
+
+  public async verifyTokenEmail(token: string): Promise<void> {
+    const tokenData = await actionTokenRepository.findByParams({
+      actionToken: token,
+      type: ActionTokenTypeEnum.VERIFY_EMAIL,
+    });
+    if (!tokenData) {
+      throw new ApiError("Token is not valid", 400);
+    }
+
+    await userRepository.updateById(tokenData._userId, { isVerified: true });
+    await actionTokenRepository.deleteManyByParams({ actionToken: token });
   }
 
   private async isEmailExist(email: string): Promise<IUser> {

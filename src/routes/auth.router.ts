@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { authController } from "../controllers/authController";
+import { authController } from "../controllers/auth.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { userValidator } from "../validators/user.validator";
@@ -37,6 +37,13 @@ router.put(
   "/forgot-password",
   authMiddleware.checkActionToken,
   authController.forgotPasswordSet,
+);
+
+router.post("/verify", authController.verify);
+router.get(
+  "/verify/:token",
+  authMiddleware.checkVerifyToken,
+  authController.verifyEmail,
 );
 
 export const authRouter = router;

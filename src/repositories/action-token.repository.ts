@@ -8,6 +8,11 @@ class ActionTokenRepository {
   public async getByToken(actionToken: string): Promise<IActionToken | null> {
     return await ActionToken.findOne({ actionToken });
   }
+  public async findByParams(
+    params: Partial<IActionToken>,
+  ): Promise<IActionToken | null> {
+    return await ActionToken.findOne(params);
+  }
   public async deleteManyByParams(
     params: Partial<IActionToken>,
   ): Promise<void> {
