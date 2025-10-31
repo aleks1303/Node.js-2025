@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
 
 import { configs } from "./configs/config";
+import { runnerCrones } from "./crons";
 import { ApiError } from "./errors/api.error";
 import { authRouter } from "./routes/auth.router";
 import { userRouter } from "./routes/user.router";
@@ -28,5 +29,6 @@ const mongoDb = configs.MONGO_URI;
 
 app.listen(port, async () => {
   await mongoose.connect(mongoDb);
+  runnerCrones();
   console.log(`Server started on http://${host}:${port}`);
 });
