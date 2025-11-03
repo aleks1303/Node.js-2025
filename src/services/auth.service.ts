@@ -134,6 +134,14 @@ class AuthService {
     jwtPayload: ITokenPayload,
   ) {
     const user = await userRepository.getById(jwtPayload.userId);
+    const usedPasswords = await passwordService.isPasswordValid(
+      user._id,
+      dto.password,
+      180,
+    );
+    if (usedPasswords) {
+      throw new ApiError("This password was used in the last 180 days", 400);
+    }
     const password = await passwordService.hashPassword(dto.password);
     await passwordRepository.createPassword({
       _userId: user._id,
