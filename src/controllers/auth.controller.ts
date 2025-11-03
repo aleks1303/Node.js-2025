@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 import { authService } from "../services/auth.service";
+import { ChangePassword } from "../types/change.password.type/change.password";
 import {
   ForgotPasswordSend,
   ForgotPasswordSet,
@@ -92,6 +93,17 @@ class AuthController {
       const jwtPayload = req.res.locals.jwtPayload;
       const dto = req.body as ForgotPasswordSet;
       await authService.forgotPasswordSet(dto, jwtPayload);
+      res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async changePassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const jwtPayload = req.res.locals.jwtPayload;
+      const dto = req.body as ChangePassword;
+      await authService.changePassword(jwtPayload, dto);
       res.sendStatus(204);
     } catch (e) {
       next(e);

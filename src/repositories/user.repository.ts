@@ -12,7 +12,7 @@ class UserRepository {
     return await User.findByIdAndUpdate(userId, dto, { new: true });
   }
   public async getById(userId: string): Promise<IUser> {
-    return await User.findById(userId);
+    return await User.findById(userId).select("+password");
   }
   public async deleteById(userId: string): Promise<void> {
     await User.findByIdAndDelete(userId);

@@ -25,5 +25,10 @@ class UserValidator {
     email: this.email,
     password: this.password,
   });
+
+  public changePassword = Joi.object({
+    password: this.password,
+    oldPassword: this.password,
+  });
 }
 export const userValidator = new UserValidator();

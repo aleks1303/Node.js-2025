@@ -39,6 +39,13 @@ router.put(
   authController.forgotPasswordSet,
 );
 
+router.post(
+  "/change-password",
+  authMiddleware.checkAccessToken,
+  commonMiddleware.isBodyValid(userValidator.changePassword),
+  authController.changePassword,
+);
+
 router.post("/verify", authController.verify);
 router.get(
   "/verify/:token",

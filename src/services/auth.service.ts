@@ -6,6 +6,7 @@ import { IUser } from "../interfaces/user.interface";
 import { actionTokenRepository } from "../repositories/action-token.repository";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
+import { ChangePassword } from "../types/change.password.type/change.password";
 import {
   ForgotPasswordSend,
   ForgotPasswordSet,
@@ -133,6 +134,20 @@ class AuthService {
     await tokenRepository.deleteByParams({ _userId: jwtPayload.userId });
   }
 
+  public async changePassword(jwtPayload: ITokenPayload, dto: ChangePassword) {
+    const user = await userRepository.getById(jwtPayload.userId);
+    const isPasswordCorrect = await passwordService.comparePassword(
+      user.password,
+      dto.oldPassword,
+    );
+    if (isPasswordCorrect) {
+      throw new ApiError("Invalid previous password", 400);
+    }
+    const password = await passwordService.hashPassword(dto.password);
+    await userRepository.updateById(jwtPayload.userId, { password });
+    await tokenRepository.deleteManyByParams({ _userId: jwtPayload.userId });
+  }
+
   public async verify(dto: VerifyType) {
     const user = await userRepository.getByEmail(dto.email);
     if (!user) {
@@ -163,10 +178,6 @@ class AuthService {
       actionToken: token,
       type: ActionTokenTypeEnum.VERIFY_EMAIL,
     });
-    if (!tokenData) {
-      throw new ApiError("Token is not valid", 400);
-    }
-
     await userRepository.updateById(tokenData._userId, { isVerified: true });
     await actionTokenRepository.deleteManyByParams({ actionToken: token });
   }
