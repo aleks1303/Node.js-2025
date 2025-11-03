@@ -4,6 +4,7 @@ import { ApiError } from "../errors/api.error";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 import { actionTokenRepository } from "../repositories/action-token.repository";
+import { passwordRepository } from "../repositories/password.repository";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { ChangePassword } from "../types/change.password.type/change.password";
@@ -12,14 +13,17 @@ import {
   ForgotPasswordSet,
 } from "../types/forgot-password.type/forgot-password.type";
 import { SignIn } from "../types/user.type/singIn";
-import { UserWithToken } from "../types/user.type/userWithToken.type";
+import {
+  UserWithToken,
+  UserWithTokenAndPassword,
+} from "../types/user.type/userWithToken.type";
 import { VerifyType } from "../types/verify.type/verify.type";
 import { emailService } from "./email.service";
 import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 
 class AuthService {
-  public async signUp(dto: Partial<IUser>): Promise<UserWithToken> {
+  public async signUp(dto: Partial<IUser>): Promise<UserWithTokenAndPassword> {
     await this.isEmailExist(dto.email);
     const password = await passwordService.hashPassword(dto.password);
     const user = await userRepository.signUp({ ...dto, password });
@@ -34,13 +38,17 @@ class AuthService {
       },
       ActionTokenTypeEnum.FORGOT_PASSWORD,
     );
+    const hashPassword = await passwordRepository.createPassword({
+      _userId: user._id,
+      password: password,
+    });
     await tokenRepository.createToken({ ...tokens, _userId: user._id });
     await emailService.sendMail(EmailTypeEnum.WELCOME, user.email, {
       name: user.name,
       email: user.email,
       actionToken: actionToken,
     });
-    return { user, tokens };
+    return { user, tokens, password: hashPassword };
   }
 
   public async SignIn(
@@ -125,7 +133,12 @@ class AuthService {
     dto: ForgotPasswordSet,
     jwtPayload: ITokenPayload,
   ) {
+    const user = await userRepository.getById(jwtPayload.userId);
     const password = await passwordService.hashPassword(dto.password);
+    await passwordRepository.createPassword({
+      _userId: user._id,
+      password: password,
+    });
     await userRepository.updateById(jwtPayload.userId, { password });
     await actionTokenRepository.deleteManyByParams({
       _userId: jwtPayload.userId,
@@ -144,6 +157,10 @@ class AuthService {
       throw new ApiError("Invalid previous password", 400);
     }
     const password = await passwordService.hashPassword(dto.password);
+    await passwordRepository.createPassword({
+      _userId: user._id,
+      password: password,
+    });
     await userRepository.updateById(jwtPayload.userId, { password });
     await tokenRepository.deleteManyByParams({ _userId: jwtPayload.userId });
   }
