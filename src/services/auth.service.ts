@@ -150,12 +150,21 @@ class AuthService {
   public async changePassword(jwtPayload: ITokenPayload, dto: ChangePassword) {
     const user = await userRepository.getById(jwtPayload.userId);
     const isPasswordCorrect = await passwordService.comparePassword(
-      user.password,
       dto.oldPassword,
+      user.password,
     );
-    if (isPasswordCorrect) {
+    if (!isPasswordCorrect) {
       throw new ApiError("Invalid previous password", 400);
     }
+    const usedPassword = await passwordService.isPasswordValid(
+      user._id,
+      dto.password,
+      180,
+    );
+    if (usedPassword) {
+      throw new ApiError("This password was used in the last 180 days", 400);
+    }
+
     const password = await passwordService.hashPassword(dto.password);
     await passwordRepository.createPassword({
       _userId: user._id,
