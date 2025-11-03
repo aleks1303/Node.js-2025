@@ -7,7 +7,7 @@ import { passwordRepository } from "../repositories/password.repository";
 const handler = async () => {
   try {
     const { value, unit } = timeHelper.parseConfigsString(
-      configs.OLD_PASSWORD_EXPIRATION,
+      configs.OLD_PASSWORD_EXPIRATION, // 180 days
     );
     const date = timeHelper.subtractByParams(value, unit);
     console.log(date);
@@ -17,4 +17,4 @@ const handler = async () => {
     console.error(error);
   }
 };
-export const removeOldPassword = new CronJob(" * * 6 * * *", handler);
+export const removeOldPassword = new CronJob(" * * 7 * * *", handler);
