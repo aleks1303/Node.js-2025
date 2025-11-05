@@ -1,7 +1,11 @@
+import { UploadedFile } from "express-fileupload";
+
+import { FileItemTypeEnum } from "../enums/fiile-item-type.enum";
 import { ApiError } from "../errors/api.error";
 import { ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
+import { s3Service } from "./s3.service";
 
 class UserService {
   public async getAllUsers(): Promise<IUser[]> {
@@ -22,6 +26,19 @@ class UserService {
 
   public async deleteMe(jwtPayload: ITokenPayload): Promise<void> {
     return await userRepository.deleteById(jwtPayload.userId);
+  }
+
+  public async uploadAvatar(
+    jwtPayload: ITokenPayload,
+    file: UploadedFile,
+  ): Promise<IUser> {
+    const avatar = await s3Service.uploadFile(
+      file,
+      FileItemTypeEnum.USER,
+      jwtPayload.userId,
+    );
+    console.log(avatar);
+    return await userRepository.getById(jwtPayload.userId);
   }
 
   public async getById(userId: string): Promise<IUser> {

@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import fileUpload from "express-fileupload";
 import * as mongoose from "mongoose";
 
 import { configs } from "./configs/config";
@@ -11,9 +12,14 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
+app.post("/test-upload", (req, res) => {
+  console.log("FILES:", req.files);
+  res.json({ received: req.files ? Object.keys(req.files) : "none" });
+});
 
 app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500).send(err.message);

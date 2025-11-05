@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { UploadedFile } from "express-fileupload";
 
 import { ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
@@ -40,6 +41,21 @@ class UserController {
       const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
       await userService.deleteMe(jwtPayload);
       res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async uploadAvatar(req: Request, res: Response, next: NextFunction) {
+    try {
+      const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
+      console.log("FILES:", req.files);
+      if (!req.files || !req.files.avatar) {
+        return res.status(400).json({ message: "Файл avatar не передано" });
+      }
+      const avatar = req.files.avatar as UploadedFile;
+      const user = await userService.uploadAvatar(jwtPayload, avatar);
+      res.status(201).json(user);
     } catch (e) {
       next(e);
     }
