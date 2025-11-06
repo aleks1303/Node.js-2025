@@ -17,6 +17,9 @@ class UserService {
     if (!user) {
       throw new ApiError("User not found", 404);
     }
+    if (user.avatar) {
+      await s3Service.deleteFile(user.avatar);
+    }
     return user;
   }
 
@@ -25,7 +28,14 @@ class UserService {
   }
 
   public async deleteMe(jwtPayload: ITokenPayload): Promise<void> {
-    return await userRepository.deleteById(jwtPayload.userId);
+    const user = await userRepository.getById(jwtPayload.userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    if (user.avatar) {
+      await s3Service.deleteFile(user.avatar);
+    }
+    await userRepository.deleteById(jwtPayload.userId);
   }
 
   public async uploadAvatar(
@@ -33,16 +43,14 @@ class UserService {
     file: UploadedFile,
   ): Promise<IUser> {
     const user = await userRepository.getById(jwtPayload.userId);
+    const oldFilePath = user.avatar;
     const avatar = await s3Service.uploadFile(
       file,
       FileItemTypeEnum.USER,
       user._id,
+      oldFilePath,
     );
-    const updateUser = await userRepository.updateById(user._id, { avatar });
-    if (user.avatar) {
-      // await userRepository.deleteFile(user.avatar) to do
-    }
-    return updateUser;
+    return await userRepository.updateById(user._id, { avatar });
   }
 
   public async getById(userId: string): Promise<IUser> {
@@ -53,7 +61,7 @@ class UserService {
     return user;
   }
   public async deleteById(userId: string): Promise<void> {
-    return await userRepository.deleteById(userId);
+    await userRepository.deleteById(userId);
   }
 }
 export const userService = new UserService();

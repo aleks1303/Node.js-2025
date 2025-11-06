@@ -1,7 +1,11 @@
 import { randomUUID } from "node:crypto";
 import path from "node:path";
 
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import { UploadedFile } from "express-fileupload";
 
 import { configs } from "../configs/config";
@@ -17,13 +21,18 @@ class S3Service {
       },
     }),
   ) {}
+
   public async uploadFile(
     file: UploadedFile,
     itemType: FileItemTypeEnum,
     itemId: string,
+    oldFilePath: string,
   ): Promise<string> {
     try {
       const filePath = this.buildPath(itemType, itemId, file.name);
+      if (oldFilePath) {
+        await this.deleteFile(oldFilePath);
+      }
       await this.client.send(
         new PutObjectCommand({
           Bucket: configs.AWS_S3_BUCKET_NAME,
@@ -34,6 +43,19 @@ class S3Service {
         }),
       );
       return filePath;
+    } catch (error) {
+      console.error("Error upload", error);
+    }
+  }
+
+  public async deleteFile(filePath: string): Promise<void> {
+    try {
+      await this.client.send(
+        new DeleteObjectCommand({
+          Bucket: configs.AWS_S3_BUCKET_NAME,
+          Key: filePath,
+        }),
+      );
     } catch (error) {
       console.error("Error upload", error);
     }

@@ -20,7 +20,8 @@ class UserController {
     try {
       const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
       const user = await userService.getMe(jwtPayload);
-      res.json(user);
+      const result = userPresenter.toPublicResDto(user);
+      res.json(result);
     } catch (e) {
       next(e);
     }
@@ -67,7 +68,8 @@ class UserController {
     try {
       const userId = req.params.userId;
       const user = await userService.getById(userId);
-      res.json(user);
+      const result = userPresenter.toPublicResDto(user);
+      res.json(result);
     } catch (e) {
       next(e);
     }
