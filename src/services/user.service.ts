@@ -17,9 +17,6 @@ class UserService {
     if (!user) {
       throw new ApiError("User not found", 404);
     }
-    if (user.avatar) {
-      await s3Service.deleteFile(user.avatar);
-    }
     return user;
   }
 
