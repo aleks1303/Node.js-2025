@@ -3,6 +3,7 @@ import { UploadedFile } from "express-fileupload";
 
 import { ITokenPayload } from "../interfaces/token.interface";
 import { IUser } from "../interfaces/user.interface";
+import { userPresenter } from "../presenters/user.presenter";
 import { userService } from "../services/user.service";
 
 class UserController {
@@ -55,7 +56,8 @@ class UserController {
       }
       const avatar = req.files.avatar as UploadedFile;
       const user = await userService.uploadAvatar(jwtPayload, avatar);
-      res.status(201).json(user);
+      const result = userPresenter.toPublicResDto(user);
+      res.status(201).json(result);
     } catch (e) {
       next(e);
     }

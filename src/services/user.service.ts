@@ -32,13 +32,17 @@ class UserService {
     jwtPayload: ITokenPayload,
     file: UploadedFile,
   ): Promise<IUser> {
+    const user = await userRepository.getById(jwtPayload.userId);
     const avatar = await s3Service.uploadFile(
       file,
       FileItemTypeEnum.USER,
-      jwtPayload.userId,
+      user._id,
     );
-    console.log(avatar);
-    return await userRepository.getById(jwtPayload.userId);
+    const updateUser = await userRepository.updateById(user._id, { avatar });
+    if (user.avatar) {
+      // await userRepository.deleteFile(user.avatar) to do
+    }
+    return updateUser;
   }
 
   public async getById(userId: string): Promise<IUser> {
