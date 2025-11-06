@@ -16,10 +16,6 @@ app.use(fileUpload());
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
-app.post("/test-upload", (req, res) => {
-  console.log("FILES:", req.files);
-  res.json({ received: req.files ? Object.keys(req.files) : "none" });
-});
 
 app.use((err: ApiError, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status || 500).send(err.message);
