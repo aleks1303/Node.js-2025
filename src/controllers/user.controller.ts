@@ -51,7 +51,6 @@ class UserController {
   public async uploadAvatar(req: Request, res: Response, next: NextFunction) {
     try {
       const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
-      console.log("FILES:", req.files);
       if (!req.files || !req.files.avatar) {
         return res.status(400).json({ message: "Файл avatar не передано" });
       }
@@ -67,8 +66,8 @@ class UserController {
   public async deleteAvatar(req: Request, res: Response, next: NextFunction) {
     try {
       const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
-      const user = await userService.deleteAvatar(jwtPayload);
-      res.json(user);
+      await userService.deleteAvatar(jwtPayload);
+      res.sendStatus(204);
     } catch (e) {
       next(e);
     }
