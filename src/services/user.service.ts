@@ -50,6 +50,15 @@ class UserService {
     return await userRepository.updateById(user._id, { avatar });
   }
 
+  public async deleteAvatar(jwtPayload: ITokenPayload): Promise<void> {
+    const user = await userRepository.getById(jwtPayload.userId);
+    if (!user.avatar) {
+      throw new ApiError("User not have an avatar", 400);
+    }
+    await s3Service.deleteFile(user.avatar);
+    await userRepository.updateById(user._id, { avatar: null });
+  }
+
   public async getById(userId: string): Promise<IUser> {
     const user = await userRepository.getById(userId);
     if (!user) {
