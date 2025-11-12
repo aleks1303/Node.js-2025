@@ -3,7 +3,7 @@ import { User } from "../models/user.model";
 
 class UserRepository {
   public async getAllUsers(): Promise<IUser[]> {
-    return await User.find();
+    return await User.find({});
   }
   public async signUp(dto: Partial<IUser>) {
     return await User.create(dto);

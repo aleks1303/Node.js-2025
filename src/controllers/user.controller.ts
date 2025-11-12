@@ -9,6 +9,8 @@ import { userService } from "../services/user.service";
 class UserController {
   public async getAllUsers(req: Request, res: Response, next: NextFunction) {
     try {
+      const query = req.query;
+      console.log(query);
       const users = await userService.getAllUsers();
       res.json(users);
     } catch (e) {

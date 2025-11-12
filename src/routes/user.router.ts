@@ -4,10 +4,15 @@ import { userController } from "../controllers/user.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { fileMiddleware } from "../middlewares/file.middleware";
+import { userValidator } from "../validators/user.validator";
 
 const router = Router();
 
-router.get("/", userController.getAllUsers);
+router.get(
+  "/",
+  commonMiddleware.isQueryValid(userValidator.listQuery),
+  userController.getAllUsers,
+);
 
 router.get("/me", authMiddleware.checkAccessToken, userController.getMe);
 router.put("/me", authMiddleware.checkAccessToken, userController.updateMe);
