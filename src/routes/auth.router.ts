@@ -3,19 +3,19 @@ import { Router } from "express";
 import { authController } from "../controllers/auth.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
-import { userValidator } from "../validators/user.validator";
+import { UserValidator } from "../validators/user.validator";
 
 const router = Router();
 
 router.post(
   "/sign-up",
-  commonMiddleware.isBodyValid(userValidator.create),
+  commonMiddleware.isBodyValid(UserValidator.create),
   authController.signUp,
 );
 
 router.post(
   "/sign-in",
-  commonMiddleware.isBodyValid(userValidator.signIn),
+  commonMiddleware.isBodyValid(UserValidator.signIn),
   authController.singIn,
 );
 
@@ -42,7 +42,7 @@ router.put(
 router.post(
   "/change-password",
   authMiddleware.checkAccessToken,
-  commonMiddleware.isBodyValid(userValidator.changePassword),
+  commonMiddleware.isBodyValid(UserValidator.changePassword),
   authController.changePassword,
 );
 

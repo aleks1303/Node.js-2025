@@ -3,14 +3,14 @@ import Joi from "joi";
 import { OrderEnum } from "../enums/order.enum";
 import { UserListOrderByEnum } from "../enums/user-list-order-by.enum";
 
-class UserValidator {
-  private name = Joi.string().min(3).max(20).trim().required();
-  private age = Joi.number().min(1).max(120).required();
-  private email = Joi.string().email().trim().required();
-  private password = Joi.string().min(6).required();
-  private phone = Joi.string();
+export class UserValidator {
+  private static name = Joi.string().min(3).max(20).trim().required();
+  private static age = Joi.number().min(1).max(120).required();
+  private static email = Joi.string().email().trim().required();
+  private static password = Joi.string().min(6).required();
+  private static phone = Joi.string();
 
-  public create = Joi.object({
+  public static create = Joi.object({
     name: this.name,
     age: this.age,
     email: this.email,
@@ -18,23 +18,23 @@ class UserValidator {
     phone: this.phone,
   });
 
-  public update = Joi.object({
+  public static update = Joi.object({
     name: this.name,
     age: this.age,
     phone: this.phone,
   });
 
-  public signIn = Joi.object({
+  public static signIn = Joi.object({
     email: this.email,
     password: this.password,
   });
 
-  public changePassword = Joi.object({
+  public static changePassword = Joi.object({
     password: this.password,
     oldPassword: this.password,
   });
 
-  public listQuery = Joi.object({
+  public static listQuery = Joi.object({
     limit: Joi.number().min(1).max(100).default(10),
     page: Joi.number().min(1).default(1),
     search: Joi.string().trim().lowercase(),
@@ -42,4 +42,3 @@ class UserValidator {
     orderBy: Joi.string().valid(...Object.values(UserListOrderByEnum)),
   });
 }
-export const userValidator = new UserValidator();

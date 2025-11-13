@@ -4,13 +4,13 @@ import { userController } from "../controllers/user.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { fileMiddleware } from "../middlewares/file.middleware";
-import { userValidator } from "../validators/user.validator";
+import { UserValidator } from "../validators/user.validator";
 
 const router = Router();
 
 router.get(
   "/",
-  commonMiddleware.isQueryValid(userValidator.listQuery),
+  commonMiddleware.isBodyValid(UserValidator.listQuery),
   userController.getAllUsers,
 );
 

@@ -3,13 +3,19 @@ import { UploadedFile } from "express-fileupload";
 import { FileItemTypeEnum } from "../enums/fiile-item-type.enum";
 import { ApiError } from "../errors/api.error";
 import { ITokenPayload } from "../interfaces/token.interface";
-import { IUser } from "../interfaces/user.interface";
+import {
+  IUser,
+  IUserListQuery,
+  IUserListResponse,
+} from "../interfaces/user.interface";
+import { userPresenter } from "../presenters/user.presenter";
 import { userRepository } from "../repositories/user.repository";
 import { s3Service } from "./s3.service";
 
 class UserService {
-  public async getAllUsers(): Promise<IUser[]> {
-    return await userRepository.getAllUsers();
+  public async getAllUsers(query: IUserListQuery): Promise<IUserListResponse> {
+    const [entities, total] = await userRepository.getAllUsers(query);
+    return userPresenter.toListResDto(entities, total, query);
   }
 
   public async getMe(jwtPayload: ITokenPayload): Promise<IUser> {
