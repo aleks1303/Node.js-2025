@@ -3,6 +3,7 @@ import fileUpload from "express-fileupload";
 import * as mongoose from "mongoose";
 
 import { configs } from "./configs/config";
+import { swaggerDocument, swaggerUi } from "./configs/swagger.config";
 import { runnerCrones } from "./crons";
 import { ApiError } from "./errors/api.error";
 import { authRouter } from "./routes/auth.router";
@@ -13,6 +14,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
